@@ -1,0 +1,26 @@
+{
+  "name": "quirino",
+  "version": "1.0.0",
+  "description": "Premios Quirino — Animación Iberoamericana",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "studio": "sanity dev --dir sanity"
+  },
+  "dependencies": {
+    "@portabletext/to-html": "^5.0.2",
+    "@sanity/client": "^6.0.0",
+    "@sanity/image-url": "^1.0.0",
+    "@sanity/vision": "^3.0.0",
+    "astro": "^4.0.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "sanity": "^3.0.0",
+    "styled-components": "^6.3.11"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

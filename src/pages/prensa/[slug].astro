@@ -1,0 +1,172 @@
+---
+// src/pages/prensa/[slug].astro
+import Page from '../../layouts/Page.astro';
+import { getNoticia, getNoticiaSlugs } from '../../lib/queries';
+import type { Lang } from '../../lib/i18n';
+import { toHTML } from '@portabletext/to-html';
+
+const lang: Lang = 'es';
+
+export async function getStaticPaths() {
+  try {
+    const slugs = await getNoticiaSlugs();
+    return slugs.map((n: { slug: string }) => ({
+      params: { slug: n.slug },
+    }));
+  } catch (e) {
+    return [
+      { params: { slug: 'convocatoria-2026' } },
+      { params: { slug: 'record-foro-2026' } },
+      { params: { slug: 'quirino-lab-2026' } },
+      { params: { slug: 'jurado-2026' } },
+      { params: { slug: 'ganadores-2025' } },
+    ];
+  }
+}
+
+const { slug } = Astro.params;
+
+let noticia: any = null;
+try {
+  noticia = await getNoticia(slug!);
+} catch (e) {}
+
+if (!noticia) {
+  const placeholders: Record<string, any> = {
+    'convocatoria-2026': {
+      titulo: { es: 'Abierta la convocatoria oficial de los Premios Quirino 2026' },
+      extracto: { es: 'Las producciones estrenadas durante 2025 pueden inscribirse hasta el 15 de marzo.' },
+      categoria: 'Convocatoria', fecha: '2026-02-14',
+      _bodyPlain: 'Los Premios Quirino de la Animación Iberoamericana abren la convocatoria para su 9ª edición.\n\nPodrán inscribirse todas las producciones de animación estrenadas o emitidas por primera vez entre el 1 de enero y el 31 de diciembre de 2025.\n\nLas inscripciones se realizan exclusivamente a través del formulario oficial en la web del festival. El plazo finaliza el 15 de marzo de 2026.',
+    },
+    'ganadores-2025': {
+      titulo: { es: 'Los ganadores de los Premios Quirino 2025' },
+      extracto: { es: 'Ceremonia de entrega en el Auditorio Adán Martín con 400 profesionales del sector.' },
+      categoria: 'Premios', fecha: '2025-04-26',
+      _bodyPlain: 'El Auditorio Adán Martín de Santa Cruz de Tenerife acogió la 8ª edición de los Premios Quirino de la Animación Iberoamericana.\n\nLa ceremonia estuvo presidida por la consejera de Cultura del Gobierno de Canarias y contó con la presencia de los principales productores y directores de animación iberoamericana.',
+    },
+  };
+  noticia = placeholders[slug!] || {
+    titulo: { es: 'Noticia no encontrada' }, extracto: { es: '' },
+    categoria: '', fecha: '2026-01-01',
+    _bodyPlain: 'El contenido de esta noticia estará disponible próximamente.',
+  };
+}
+
+const titulo   = noticia.titulo?.[lang]  || noticia.titulo?.es  || '';
+const extracto = noticia.extracto?.[lang] || noticia.extracto?.es || '';
+
+// Cuerpo: Portable Text (array de bloques desde Sanity) → HTML
+// o texto plano de placeholders → split por párrafos
+const cuerpoBloques = noticia.cuerpo?.[lang] || noticia.cuerpo?.es;
+const bodyHtml = Array.isArray(cuerpoBloques) ? toHTML(cuerpoBloques) : null;
+const bodyPlain: string = noticia._bodyPlain || '';
+
+function formatFecha(fecha: string) {
+  return new Date(fecha).toLocaleDateString('es-ES', {
+    day: 'numeric', month: 'long', year: 'numeric'
+  });
+}
+---
+
+<Page
+  title={`${titulo} — Premios Quirino`}
+  description={extracto}
+  lang={lang}
+>
+
+  <!-- ── Header oscuro ── -->
+  <section class="art-hero" id="hero">
+    <div class="ah-meta">
+      <a class="ah-back" href="/prensa">← Prensa</a>
+      {noticia.categoria && <span class="ah-cat">{noticia.categoria}</span>}
+    </div>
+    <h1 class="ah-title">{titulo}</h1>
+    <time class="ah-fecha" datetime={noticia.fecha}>{formatFecha(noticia.fecha)}</time>
+  </section>
+
+  <!-- ── Cuerpo del artículo ── -->
+  <article class="art-body">
+    {extracto && <p class="art-lead">{extracto}</p>}
+
+    <div class="art-text">
+      {bodyHtml
+        ? <Fragment set:html={bodyHtml} />
+        : bodyPlain.split('\n\n').filter((p: string) => p.trim()).map((p: string) => (
+            <p>{p.trim()}</p>
+          ))
+      }
+    </div>
+
+    <div class="art-footer">
+      <a class="art-back-link" href="/prensa">← Volver a prensa</a>
+    </div>
+  </article>
+
+</Page>
+
+<style>
+.art-hero {
+  background: var(--ink);
+  padding: 140px var(--gutter) 72px;
+  display: flex; flex-direction: column; gap: 32px;
+  max-width: 900px;
+}
+
+.ah-meta { display: flex; align-items: center; gap: 20px; }
+
+.ah-back {
+  font-size: 11px; font-weight: 400;
+  color: rgba(250,249,247,.3); letter-spacing: .3px;
+  transition: color .2s;
+}
+.ah-back:hover { color: rgba(250,249,247,.7); }
+
+.ah-cat {
+  font-size: 10px; font-weight: 400; color: var(--gold);
+  letter-spacing: .6px; border: 1px solid rgba(184,134,42,.35);
+  padding: 2px 8px; border-radius: 2px;
+}
+
+.ah-title {
+  font-size: clamp(28px, 4vw, 52px); font-weight: 700;
+  color: #fff; line-height: 1.05; letter-spacing: -1.5px;
+}
+
+.ah-fecha { font-size: 12px; font-weight: 300; color: rgba(250,249,247,.3); }
+
+/* ── Cuerpo ── */
+.art-body { padding: var(--section-v) var(--gutter); max-width: 720px; }
+
+.art-lead {
+  font-size: 18px; font-weight: 400; color: var(--text); line-height: 1.65;
+  margin-bottom: 48px; padding-bottom: 48px; border-bottom: 1px solid var(--line);
+}
+
+.art-text { display: flex; flex-direction: column; gap: 24px; }
+
+.art-text p  { font-size: 16px; font-weight: 300; color: var(--text); line-height: 1.85; }
+.art-text h2 { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -.3px; margin-top: 8px; }
+.art-text h3 { font-size: 17px; font-weight: 500; color: var(--text); }
+.art-text strong { font-weight: 500; }
+
+.art-text a {
+  color: var(--gold); border-bottom: 1px solid rgba(184,134,42,.3);
+  transition: border-color .15s;
+}
+.art-text a:hover { border-color: var(--gold); }
+
+.art-text ul, .art-text ol {
+  padding-left: 20px; display: flex; flex-direction: column; gap: 8px;
+}
+.art-text li { font-size: 16px; font-weight: 300; color: var(--text); line-height: 1.7; }
+
+.art-footer { margin-top: 72px; padding-top: 28px; border-top: 1px solid var(--line); }
+
+.art-back-link {
+  font-size: 12px; font-weight: 400; color: var(--muted);
+  border-bottom: 1px solid var(--line); padding-bottom: 2px;
+  transition: color .15s, border-color .15s;
+}
+.art-back-link:hover { color: var(--text); border-color: var(--text); }
+</style>

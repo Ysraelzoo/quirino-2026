@@ -1,0 +1,136 @@
+---
+// src/components/layout/Footer.astro
+import { useTranslations, type Lang } from '../../lib/i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<footer>
+  <div class="footer-top">
+    <div class="ft-col">
+      <p class="ft-logo">( <span class="mark">Quirino</span> ) Animación Iberoamericana</p>
+      <p class="ft-desc">
+        Los Premios Quirino de la Animación Iberoamericana reconocen cada año las mejores
+        producciones del sector. Santa Cruz de Tenerife.
+      </p>
+      <div class="ft-soc-row">
+        <a class="ft-soc" href="https://instagram.com/premiosquirino" target="_blank" rel="noopener">Instagram</a>
+        <a class="ft-soc" href="https://twitter.com/premiosquirino"  target="_blank" rel="noopener">Twitter</a>
+        <a class="ft-soc" href="https://youtube.com"                  target="_blank" rel="noopener">YouTube</a>
+        <a class="ft-soc" href="https://linkedin.com"                 target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+
+    <div class="ft-col">
+      <p class="ft-col-h">{t('nav.premios')}</p>
+      <nav class="ft-links">
+        <a class="ft-link" href="/premios">Acerca de los premios</a>
+        <a class="ft-link" href="/bases">Categorías y bases</a>
+        <a class="ft-link" href="/palmares">Palmarés histórico</a>
+        <a class="ft-link" href="/jurado">Jurado</a>
+        <a class="ft-link" href="/embajadores">Embajadores</a>
+      </nav>
+    </div>
+
+    <div class="ft-col">
+      <p class="ft-col-h">{t('nav.industria')}</p>
+      <nav class="ft-links">
+        <a class="ft-link" href="/industria/foro">Foro de Coproducción</a>
+        <a class="ft-link" href="/industria/lab">Quirino Lab</a>
+        <a class="ft-link" href="/industria/futuros">Laboratorio de Futuros</a>
+        <a class="ft-link" href="/industria/libro-blanco">Libro Blanco</a>
+        <a class="ft-link" href="/industria/publicaciones">Publicaciones</a>
+      </nav>
+    </div>
+
+    <div class="ft-col">
+      <p class="ft-col-h">{t('nav.prensa')}</p>
+      <nav class="ft-links">
+        <a class="ft-link" href="/prensa">Sala de prensa</a>
+        <a class="ft-link" href="/prensa/noticias">Noticias</a>
+        <a class="ft-link" href="/newsletter">Newsletter</a>
+        <a class="ft-link" href="/patrocinadores">Patrocinadores</a>
+        <a class="ft-link" href="/contacto">Contacto</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span class="fb-copy">{t('footer.copy')} · Santa Cruz de Tenerife</span>
+    <div class="fb-langs">
+      <a class="fb-lang" href="/es" class:list={[{ on: lang === 'es' }]}>ES</a>
+      <a class="fb-lang" href="/pt" class:list={[{ on: lang === 'pt' }]}>PT</a>
+      <a class="fb-lang" href="/en" class:list={[{ on: lang === 'en' }]}>EN</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+footer {
+  background: var(--ink);
+  color: rgba(250,249,247,.3);
+  padding: 0 var(--gutter);
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 0;
+  padding: 56px 0;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.ft-col { padding-right: 32px; }
+
+.ft-logo {
+  font-size: 12px; font-weight: 400; color: rgba(250,249,247,.55);
+  margin-bottom: 14px; letter-spacing: .3px;
+}
+.ft-logo .mark { color: var(--gold); }
+
+.ft-desc {
+  font-size: 12px; font-weight: 300; color: rgba(250,249,247,.22);
+  line-height: 1.9; margin-bottom: 22px;
+}
+
+.ft-soc-row { display: flex; gap: 16px; }
+.ft-soc {
+  font-size: 10px; font-weight: 400; color: rgba(250,249,247,.2);
+  letter-spacing: .4px; transition: color .15s;
+}
+.ft-soc:hover { color: var(--gold); }
+
+.ft-col-h {
+  font-size: 10px; font-weight: 400; color: rgba(250,249,247,.2);
+  letter-spacing: .5px; margin-bottom: 20px; padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+
+.ft-links { display: flex; flex-direction: column; gap: 10px; }
+.ft-link {
+  font-size: 12px; font-weight: 300; color: rgba(250,249,247,.22);
+  transition: color .15s;
+}
+.ft-link:hover { color: rgba(250,249,247,.6); }
+
+.footer-bottom {
+  padding: 18px 0;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.fb-copy {
+  font-size: 10px; font-weight: 300; color: rgba(250,249,247,.15); letter-spacing: .3px;
+}
+
+.fb-langs { display: flex; gap: 14px; }
+.fb-lang {
+  font-size: 10px; font-weight: 400; color: rgba(250,249,247,.2);
+  transition: color .15s;
+}
+.fb-lang:hover, .fb-lang.on { color: var(--gold); }
+</style>

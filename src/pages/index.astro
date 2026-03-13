@@ -1,0 +1,139 @@
+---
+// src/pages/index.astro
+// Homepage principal — datos reales desde Sanity
+
+import Page from '../layouts/Page.astro';
+import Hero from '../components/sections/Hero.astro';
+import Categorias from '../components/sections/Categorias.astro';
+import Industria from '../components/sections/Industria.astro';
+import PhotoStrip from '../components/sections/PhotoStrip.astro';
+import Ediciones from '../components/sections/Ediciones.astro';
+import Noticias from '../components/sections/Noticias.astro';
+import Patrocinadores from '../components/sections/Patrocinadores.astro';
+import { getEdiciones, getNoticias, getPatrocinadores } from '../lib/queries';
+
+const lang = 'es'; // TODO: detectar desde URL cuando se implemente i18n
+
+// Datos desde Sanity (con fallback si no hay datos aún)
+let ediciones = [];
+let noticias  = [];
+let patrocinadores = [];
+
+try {
+  ediciones      = await getEdiciones();
+  noticias       = await getNoticias(3);
+  patrocinadores = await getPatrocinadores();
+} catch (e) {
+  // Sanity no configurado todavía — usar datos de placeholder
+  console.warn('[Quirino] Sanity no configurado — usando datos placeholder');
+}
+
+// Edición más reciente
+const edicionActual = ediciones[0] || {
+  year: 2026, numero: 9, sede: 'Auditorio Adán Martín, Santa Cruz de Tenerife'
+};
+
+// Datos de placeholder para desarrollo (sin Sanity)
+const edicionesFallback = ediciones.length > 0 ? ediciones : [
+  { year: 2026, numero: 9, sede: 'Auditorio Adán Martín, Santa Cruz de Tenerife' },
+  { year: 2025, numero: 8, sede: 'Santa Cruz de Tenerife' },
+  { year: 2024, numero: 7, sede: 'Santa Cruz de Tenerife' },
+  { year: 2023, numero: 6, sede: 'Santa Cruz de Tenerife' },
+  { year: 2022, numero: 5, sede: 'Santa Cruz de Tenerife' },
+  { year: 2021, numero: 4, sede: 'Santa Cruz de Tenerife' },
+  { year: 2020, numero: 3, sede: 'Online' },
+  { year: 2019, numero: 2, sede: 'Santa Cruz de Tenerife' },
+  { year: 2018, numero: 1, sede: 'Santa Cruz de Tenerife' },
+];
+
+const noticiasFallback = noticias.length > 0 ? noticias : [
+  {
+    _id: '1',
+    titulo: { es: 'Abierta la convocatoria oficial de los Premios Quirino 2026', pt: '', en: '' },
+    extracto: { es: 'Las producciones estrenadas durante 2025 pueden inscribirse hasta el 15 de marzo.', pt: '', en: '' },
+    slug: { current: 'convocatoria-2026' },
+    categoria: 'Convocatoria',
+    fecha: '2026-02-14',
+  },
+  {
+    _id: '2',
+    titulo: { es: 'Récord de participantes en el Foro de Coproducción y Negocios', pt: '', en: '' },
+    extracto: { es: 'La edición 2026 supera las 300 empresas inscritas, un 25% más que el año anterior.', pt: '', en: '' },
+    slug: { current: 'record-foro-2026' },
+    categoria: 'Foro',
+    fecha: '2026-02-08',
+  },
+  {
+    _id: '3',
+    titulo: { es: 'Seleccionados los 8 proyectos de Quirino Lab 2026', pt: '', en: '' },
+    extracto: { es: 'Propuestas de Argentina, Brasil, España, México y Chile con alto potencial de coproducción.', pt: '', en: '' },
+    slug: { current: 'quirino-lab-2026' },
+    categoria: 'Quirino Lab',
+    fecha: '2026-02-01',
+  },
+];
+---
+
+<Page
+  title="Premios Quirino — Animación Iberoamericana"
+  description="Los Premios Quirino de la Animación Iberoamericana. 9ª Edición, Santa Cruz de Tenerife, Abril 2026."
+  lang={lang}
+>
+
+  <!-- 1. Hero -->
+  <Hero
+    edicionActual={edicionActual}
+    ediciones={edicionesFallback}
+    lang={lang}
+  />
+
+  <!-- 2. Categorías -->
+  <Categorias lang={lang} />
+
+  <!-- 3. Industria -->
+  <Industria lang={lang} />
+
+  <!-- 4. PhotoStrip -->
+  <div class="photostrip-wrap reveal">
+    <PhotoStrip />
+  </div>
+
+  <!-- 5. Ediciones -->
+  <Ediciones
+    lang={lang}
+    ediciones={edicionesFallback}
+    edicionActual={edicionActual.year}
+  />
+
+  <!-- 6. Noticias -->
+  <Noticias noticias={noticiasFallback} lang={lang} />
+
+  <!-- 7. Patrocinadores -->
+  <Patrocinadores
+    lang={lang}
+    patrocinadores={patrocinadores.length > 0 ? patrocinadores : undefined}
+  />
+
+</Page>
+
+<style>
+.photostrip-wrap {
+  padding: 0 var(--gutter);
+  overflow: hidden;
+}
+</style>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver(
+    (entries) => entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('on');
+        observer.unobserve(e.target);
+      }
+    }),
+    { threshold: 0.06, rootMargin: '0px 0px -40px 0px' }
+  );
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>

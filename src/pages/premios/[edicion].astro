@@ -1,0 +1,110 @@
+---
+// src/pages/premios/[edicion].astro
+// Página de cada edición: /premios/2026, /premios/2025...
+
+import Page from '../../layouts/Page.astro';
+import { getEdicion, getEdicionSlugs } from '../../lib/queries';
+import { urlFor } from '../../lib/sanity';
+
+export async function getStaticPaths() {
+  try {
+    const ediciones = await getEdicionSlugs();
+    return ediciones.map((ed: any) => ({
+      params: { edicion: String(ed.year) },
+    }));
+  } catch {
+    // Fallback para desarrollo sin Sanity
+    return [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018].map(year => ({
+      params: { edicion: String(year) },
+    }));
+  }
+}
+
+const { edicion } = Astro.params;
+const year = parseInt(edicion);
+
+let data: any = null;
+try {
+  data = await getEdicion(year);
+} catch {
+  console.warn(`[Quirino] No se pudo cargar la edición ${year}`);
+}
+
+const heroUrl = data?.heroImage
+  ? urlFor(data.heroImage).width(1920).height(800).auto('format').url()
+  : null;
+---
+
+<Page
+  title={`${year}ª Edición Premios Quirino`}
+  description={data?.sinopsis?.es || `Premios Quirino ${year} — Edición ${year}`}
+>
+  {heroUrl && (
+    <div class="ed-hero" style={`background-image: url('${heroUrl}')`} aria-hidden="true"></div>
+  )}
+
+  <div class="ed-content">
+    <h1 class="ed-title">Premios Quirino {year}</h1>
+
+    {data?.ganadores?.length > 0 && (
+      <section class="ed-section">
+        <h2 class="ed-section-title">Ganadores</h2>
+        <div class="ed-ganadores">
+          {data.ganadores.map((g: any) => (
+            <div class="ed-ganador">
+              <span class="ed-cat">{g.categoria}</span>
+              <h3 class="ed-obra">{g.tituloObra?.es || g.tituloObra}</h3>
+              <p class="ed-meta">{g.pais} · {g.productora}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {!data && (
+      <p class="ed-empty">Contenido de esta edición disponible próximamente.</p>
+    )}
+  </div>
+</Page>
+
+<style>
+.ed-hero {
+  height: 50vh; min-height: 320px;
+  background-size: cover; background-position: center;
+  background-color: var(--ink);
+}
+
+.ed-content {
+  padding: 80px var(--gutter);
+}
+
+.ed-title {
+  font-size: 48px; font-weight: 400; color: var(--text);
+  letter-spacing: -.5px; margin-bottom: 60px;
+}
+
+.ed-section { margin-bottom: 60px; }
+
+.ed-section-title {
+  font-size: 11px; font-weight: 400; color: var(--muted);
+  letter-spacing: .8px; margin-bottom: 24px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--line);
+}
+
+.ed-ganadores {
+  display: flex; flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+.ed-ganador {
+  padding: 20px 0; border-bottom: 1px solid var(--line);
+  display: grid; grid-template-columns: 280px 1fr 200px;
+  gap: 40px; align-items: center;
+}
+
+.ed-cat  { font-size: 11px; font-weight: 400; color: var(--gold); }
+.ed-obra { font-size: 18px; font-weight: 400; color: var(--text); }
+.ed-meta { font-size: 12px; font-weight: 300; color: var(--muted); text-align: right; }
+
+.ed-empty { font-size: 14px; color: var(--muted); }
+</style>

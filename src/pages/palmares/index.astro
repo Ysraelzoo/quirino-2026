@@ -1,0 +1,414 @@
+---
+// src/pages/palmares/index.astro
+import Page from '../../layouts/Page.astro';
+import { getPalmares } from '../../lib/queries';
+import type { Lang } from '../../lib/i18n';
+
+const lang: Lang = 'es';
+
+let edicionesData: any[] = [];
+try {
+  edicionesData = await getPalmares();
+} catch (e) {}
+
+// Placeholder: 8 ediciones (2018 – 2025)
+const historialFallback: any[] = edicionesData.length > 0 ? edicionesData : [
+  {
+    year: 2025, numero: '8ª', sede: 'Santa Cruz de Tenerife',
+    ganadores: [
+      { categoria: 'Mejor Largometraje Iberoamericano',         obra: 'El sueño del caimán',           pais: 'Colombia',   estudio: 'Cine Colombiano SA' },
+      { categoria: 'Mejor Largometraje Europeo-Iberoamericano', obra: 'O tempo dos polvos',             pais: 'Portugal',   estudio: 'Porto Filmes' },
+      { categoria: 'Mejor Serie de Animación',                  obra: 'Las crónicas de Malinche',       pais: 'México',     estudio: 'Dynamo Producciones' },
+      { categoria: 'Mejor Cortometraje',                        obra: 'Nocturno',                       pais: 'Argentina',  estudio: 'Baires Estudio' },
+      { categoria: 'Mejor Videojuego',                          obra: 'Guerrero de Luz',                pais: 'Brasil',     estudio: 'Saci Games' },
+      { categoria: 'Mejor Producción de Encargo',               obra: 'Agua viva',                      pais: 'España',     estudio: 'Blur Studio Madrid' },
+      { categoria: 'Mejor Producción de Escuela',               obra: 'La raíz',                        pais: 'Chile',      estudio: 'UTEM Santiago' },
+      { categoria: 'Premio del Público',                        obra: 'Pacha Mama Redux',               pais: 'Perú',       estudio: 'Andina Animation' },
+      { categoria: 'Premio Especial del Jurado',                obra: 'Invisible',                      pais: 'Uruguay',    estudio: 'Montevideo Toons' },
+      { categoria: 'Premio Trayectoria Iberoamericana',         obra: 'Juan Padrón',                    pais: 'Cuba',       estudio: '—' },
+    ],
+  },
+  {
+    year: 2024, numero: '7ª', sede: 'Santa Cruz de Tenerife',
+    ganadores: [
+      { categoria: 'Mejor Largometraje Iberoamericano',         obra: 'La leyenda del jaguar',          pais: 'México',     estudio: 'Anima Estudios' },
+      { categoria: 'Mejor Largometraje Europeo-Iberoamericano', obra: 'A casa da lua',                  pais: 'Portugal',   estudio: 'Filmin PT' },
+      { categoria: 'Mejor Serie de Animación',                  obra: 'Yuca & Yuca',                    pais: 'Brasil',     estudio: 'Mixer' },
+      { categoria: 'Mejor Cortometraje',                        obra: 'Lluvia de estrellas',            pais: 'España',     estudio: 'El Señor Studio' },
+      { categoria: 'Mejor Videojuego',                          obra: 'Kóndor: El despertar',           pais: 'Colombia',   estudio: 'Pixelatica' },
+      { categoria: 'Mejor Producción de Encargo',               obra: 'Planeta Vivo',                   pais: 'Argentina',  estudio: 'Huevocartoon' },
+      { categoria: 'Mejor Producción de Escuela',               obra: 'Semilla',                        pais: 'España',     estudio: 'Escuela TAI' },
+      { categoria: 'Premio del Público',                        obra: 'Ola de calor',                   pais: 'México',     estudio: 'Anima Estudios' },
+      { categoria: 'Premio Especial del Jurado',                obra: 'Fragmentos',                     pais: 'Chile',      estudio: 'Folio Animación' },
+      { categoria: 'Premio Trayectoria Iberoamericana',         obra: 'Ángel de la Cruz',               pais: 'España',     estudio: '—' },
+    ],
+  },
+  {
+    year: 2023, numero: '6ª', sede: 'Santa Cruz de Tenerife',
+    ganadores: [
+      { categoria: 'Mejor Largometraje Iberoamericano',         obra: 'Abuelos',                        pais: 'Cuba',       estudio: 'ICAIC Animados' },
+      { categoria: 'Mejor Largometraje Europeo-Iberoamericano', obra: 'Buñuel en el laberinto',         pais: 'España',     estudio: 'Castafiore Films' },
+      { categoria: 'Mejor Serie de Animación',                  obra: 'El barco pirata',                pais: 'España',     estudio: 'Zinkia Entertainment' },
+      { categoria: 'Mejor Cortometraje',                        obra: 'Punto de fuga',                  pais: 'Venezuela',  estudio: 'Los Palos Studio' },
+      { categoria: 'Mejor Videojuego',                          obra: 'Aztec Realm',                    pais: 'México',     estudio: 'Lemon Sky' },
+      { categoria: 'Mejor Producción de Encargo',               obra: 'Brisa Marina',                   pais: 'Portugal',   estudio: 'Bando à Parte' },
+      { categoria: 'Mejor Producción de Escuela',               obra: 'Sal',                            pais: 'Uruguay',    estudio: 'CLAEH' },
+      { categoria: 'Premio del Público',                        obra: 'El barco pirata',                pais: 'España',     estudio: 'Zinkia Entertainment' },
+      { categoria: 'Premio Especial del Jurado',                obra: 'Abuelos',                        pais: 'Cuba',       estudio: 'ICAIC Animados' },
+      { categoria: 'Premio Trayectoria Iberoamericana',         obra: 'Abi Feijóo',                     pais: 'España',     estudio: '—' },
+    ],
+  },
+  {
+    year: 2022, numero: '5ª', sede: 'Santa Cruz de Tenerife',
+    ganadores: [
+      { categoria: 'Mejor Largometraje Iberoamericano',         obra: 'Nahuel y el libro mágico',       pais: 'Chile',      estudio: 'Wood Producciones' },
+      { categoria: 'Mejor Largometraje Europeo-Iberoamericano', obra: 'Unicorn Wars',                   pais: 'España',     estudio: 'Abano Produciones' },
+      { categoria: 'Mejor Serie de Animación',                  obra: 'Milo',                           pais: 'España',     estudio: 'Kotoc' },
+      { categoria: 'Mejor Cortometraje',                        obra: 'Tótem',                          pais: 'México',     estudio: 'Tótem Films' },
+      { categoria: 'Mejor Videojuego',                          obra: 'Chronos Twins DX',               pais: 'España',     estudio: 'EnjoyUp Games' },
+      { categoria: 'Mejor Producción de Encargo',               obra: 'Naturaleza conectada',           pais: 'Brasil',     estudio: 'Birdo' },
+      { categoria: 'Mejor Producción de Escuela',               obra: 'Hilo',                           pais: 'Argentina',  estudio: 'UNA' },
+      { categoria: 'Premio del Público',                        obra: 'Unicorn Wars',                   pais: 'España',     estudio: 'Abano Produciones' },
+      { categoria: 'Premio Especial del Jurado',                obra: 'Nahuel y el libro mágico',       pais: 'Chile',      estudio: 'Wood Producciones' },
+      { categoria: 'Premio Trayectoria Iberoamericana',         obra: 'Óscar Grillo',                   pais: 'Argentina',  estudio: '—' },
+    ],
+  },
+  {
+    year: 2021, numero: '4ª', sede: 'Santa Cruz de Tenerife',
+    ganadores: [
+      { categoria: 'Mejor Largometraje Iberoamericano',         obra: 'Memorable',                      pais: 'Francia/España', estudio: 'La Blogothèque' },
+      { categoria: 'Mejor Largometraje Europeo-Iberoamericano', obra: 'Cryptozoo',                      pais: 'España',     estudio: 'GloboCan' },
+      { categoria: 'Mejor Serie de Animación',                  obra: 'Klaus',                          pais: 'España',     estudio: 'The SPA Studios' },
+      { categoria: 'Mejor Cortometraje',                        obra: 'Cada noche a las nueve',         pais: 'Uruguay',    estudio: 'Palermo Studio' },
+      { categoria: 'Mejor Producción de Encargo',               obra: 'Mundos de agua',                 pais: 'España',     estudio: 'Lightbox Entertainment' },
+      { categoria: 'Mejor Producción de Escuela',               obra: 'Viento',                         pais: 'Colombia',   estudio: 'EAFIT Medellín' },
+      { categoria: 'Premio del Público',                        obra: 'Klaus',                          pais: 'España',     estudio: 'The SPA Studios' },
+      { categoria: 'Premio Especial del Jurado',                obra: 'Cada noche a las nueve',         pais: 'Uruguay',    estudio: 'Palermo Studio' },
+      { categoria: 'Premio Trayectoria Iberoamericana',         obra: 'Juan José Campanella',           pais: 'Argentina',  estudio: '—' },
+    ],
+  },
+  {
+    year: 2020, numero: '3ª', sede: 'Online',
+    ganadores: [
+      { categoria: 'Mejor Largometraje Iberoamericano',         obra: 'Guayabo',                        pais: 'Colombia',   estudio: 'La Punta Cine' },
+      { categoria: 'Mejor Largometraje Europeo-Iberoamericano', obra: 'Josep',                          pais: 'Francia/España', estudio: 'Chapeau Animation' },
+      { categoria: 'Mejor Serie de Animación',                  obra: 'Kipo y la era de las bestias',   pais: 'España',     estudio: 'Dreamworks Animation' },
+      { categoria: 'Mejor Cortometraje',                        obra: 'El empleado y el jefe',          pais: 'Argentina',  estudio: 'Truca Films' },
+      { categoria: 'Mejor Producción de Encargo',               obra: 'Somos lo que hacemos',           pais: 'España',     estudio: 'Nippur Media' },
+      { categoria: 'Mejor Producción de Escuela',               obra: 'Manos',                          pais: 'Brasil',     estudio: 'SENAC São Paulo' },
+      { categoria: 'Premio del Público',                        obra: 'Josep',                          pais: 'Francia/España', estudio: 'Chapeau Animation' },
+      { categoria: 'Premio Especial del Jurado',                obra: 'Guayabo',                        pais: 'Colombia',   estudio: 'La Punta Cine' },
+      { categoria: 'Premio Trayectoria Iberoamericana',         obra: 'Marta Kicas',                    pais: 'Brasil',     estudio: '—' },
+    ],
+  },
+  {
+    year: 2019, numero: '2ª', sede: 'Santa Cruz de Tenerife',
+    ganadores: [
+      { categoria: 'Mejor Largometraje Iberoamericano',         obra: 'Pachamama',                      pais: 'Venezuela/Francia', estudio: 'Folivari' },
+      { categoria: 'Mejor Largometraje Europeo-Iberoamericano', obra: 'Buñuel en el laberinto de las tortugas', pais: 'España', estudio: 'Sygnatia' },
+      { categoria: 'Mejor Serie de Animación',                  obra: 'Kizazi Moto',                    pais: 'España',     estudio: 'Cartoon Network' },
+      { categoria: 'Mejor Cortometraje',                        obra: 'Peripheria',                     pais: 'España',     estudio: 'Pepe School Land' },
+      { categoria: 'Mejor Producción de Encargo',               obra: 'Código de colores',              pais: 'México',     estudio: 'Animex' },
+      { categoria: 'Mejor Producción de Escuela',               obra: 'Brecha',                         pais: 'Ecuador',    estudio: 'UDLA Quito' },
+      { categoria: 'Premio del Público',                        obra: 'Pachamama',                      pais: 'Venezuela/Francia', estudio: 'Folivari' },
+      { categoria: 'Premio Especial del Jurado',                obra: 'Buñuel en el laberinto de las tortugas', pais: 'España', estudio: 'Sygnatia' },
+      { categoria: 'Premio Trayectoria Iberoamericana',         obra: 'Perla Fárber',                   pais: 'Argentina',  estudio: '—' },
+    ],
+  },
+  {
+    year: 2018, numero: '1ª', sede: 'Santa Cruz de Tenerife',
+    ganadores: [
+      { categoria: 'Mejor Largometraje Iberoamericano',         obra: 'Alike',                          pais: 'España',     estudio: 'Pepe School Land' },
+      { categoria: 'Mejor Largometraje Europeo-Iberoamericano', obra: 'Another Day of Life',            pais: 'España/Polonia', estudio: 'Kanaki Films' },
+      { categoria: 'Mejor Serie de Animación',                  obra: 'Mouk',                           pais: 'España',     estudio: 'BRB Internacional' },
+      { categoria: 'Mejor Cortometraje',                        obra: 'El cuarto reino',                pais: 'España',     estudio: 'Movistar+' },
+      { categoria: 'Mejor Producción de Encargo',               obra: 'Vuelo de papel',                 pais: 'España',     estudio: 'Estudio Mariscal' },
+      { categoria: 'Mejor Producción de Escuela',               obra: 'Río',                            pais: 'España',     estudio: 'ESNE Madrid' },
+      { categoria: 'Premio del Público',                        obra: 'Alike',                          pais: 'España',     estudio: 'Pepe School Land' },
+      { categoria: 'Premio Especial del Jurado',                obra: 'Another Day of Life',            pais: 'España/Polonia', estudio: 'Kanaki Films' },
+      { categoria: 'Premio Trayectoria Iberoamericana',         obra: 'Silvia Carpizo',                 pais: 'México',     estudio: '---' },
+    ],
+  },
+];
+
+const years = historialFallback.map(e => e.year);
+---
+
+<Page
+  title="Palmarés — Premios Quirino"
+  description="Palmarés histórico de los Premios Quirino de la Animación Iberoamericana. Todos los ganadores desde la primera edición en 2018."
+  lang={lang}
+>
+
+  <!-- ── Header oscuro ── -->
+  <section class="palm-hero" id="hero">
+    <div class="ph-inner">
+      <div>
+        <div class="ph-label">Premios Quirino · 2018 – 2025</div>
+        <h1 class="ph-title">Palmarés</h1>
+      </div>
+      <p class="ph-sub">
+        Registro histórico de todos los ganadores de los Premios Quirino
+        de la Animación Iberoamericana desde la primera edición.
+      </p>
+    </div>
+
+    <!-- Selector de año -->
+    <nav class="year-nav" aria-label="Seleccionar edición">
+      {years.map((year, i) => (
+        <button
+          class={`year-btn${i === 0 ? ' year-btn--on' : ''}`}
+          data-year={year}
+          aria-pressed={i === 0 ? 'true' : 'false'}
+        >
+          {year}
+        </button>
+      ))}
+    </nav>
+  </section>
+
+  <!-- ── Paneles de ganadores ── -->
+  <div class="palm-panels">
+    {historialFallback.map((ed, i) => (
+      <section
+        class={`palm-panel${i === 0 ? ' palm-panel--on' : ''}`}
+        data-year={ed.year}
+        aria-hidden={i === 0 ? 'false' : 'true'}
+      >
+        <!-- Cabecera edición -->
+        <div class="ed-header">
+          <div class="ed-header-left">
+            <span class="ed-num">{ed.numero} edición</span>
+            <span class="ed-sede">{ed.sede}</span>
+          </div>
+          <a class="ed-link" href={`/premios/${ed.year}`}>
+            Ver edición completa →
+          </a>
+        </div>
+
+        <!-- Tabla ganadores -->
+        <div class="winners-table" role="table" aria-label={`Ganadores ${ed.year}`}>
+          <div class="winners-head" role="row">
+            <span class="w-th" role="columnheader">Categoría</span>
+            <span class="w-th" role="columnheader">Obra ganadora</span>
+            <span class="w-th w-th-r" role="columnheader">País · Estudio</span>
+          </div>
+
+          {ed.ganadores.map((g: any) => {
+            // Soporta datos Sanity (tituloObra i18n + productora)
+            // y placeholders legacy (obra + estudio)
+            const titulo = g.tituloObra?.[lang] || g.tituloObra?.es || g.obra || '';
+            const credito = g.productora || (g.estudio !== '—' && g.estudio !== '---' ? g.estudio : '');
+            return (
+              <div class="winner-row" role="row">
+                <span class="w-cat">{g.categoria}</span>
+                <div class="w-obra-wrap">
+                  <span class="w-obra">{titulo}</span>
+                  {credito && <span class="w-prod">{credito}</span>}
+                </div>
+                <span class="w-meta">
+                  {g.pais}{g.director ? ` · ${g.director}` : ''}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+    ))}
+  </div>
+
+</Page>
+
+<style>
+/* ── Hero ── */
+.palm-hero {
+  background: var(--ink);
+  padding: 160px var(--gutter) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.ph-inner {
+  display: grid;
+  grid-template-columns: 1fr 440px;
+  gap: 80px;
+  align-items: end;
+}
+
+.ph-label {
+  font-size: 11px; font-weight: 300;
+  color: rgba(250,249,247,.3); letter-spacing: .6px;
+  margin-bottom: 24px;
+}
+
+.ph-title {
+  font-size: clamp(64px, 9vw, 118px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 0.92;
+  letter-spacing: -3px;
+  text-transform: uppercase;
+}
+
+.ph-sub {
+  font-size: 14px; font-weight: 300;
+  color: rgba(250,249,247,.4);
+  line-height: 1.85; align-self: end;
+}
+
+/* ── Selector de año ── */
+.year-nav {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid rgba(255,255,255,.08);
+  overflow-x: auto;
+}
+
+.year-btn {
+  font-size: 13px; font-weight: 400;
+  color: rgba(250,249,247,.3);
+  padding: 20px 28px;
+  border-right: 1px solid rgba(255,255,255,.08);
+  cursor: pointer;
+  transition: color .15s, background .15s;
+  font-family: var(--sans);
+  white-space: nowrap;
+  letter-spacing: -.2px;
+}
+.year-btn:first-child { padding-left: 0; border-left: none; }
+.year-btn:hover { color: rgba(250,249,247,.7); }
+.year-btn--on {
+  color: #fff;
+  font-weight: 500;
+}
+
+/* ── Paneles ── */
+.palm-panels {
+  padding: 0 var(--gutter) var(--section-v);
+}
+
+.palm-panel {
+  display: none;
+  padding-top: 64px;
+}
+.palm-panel--on { display: block; }
+
+/* ── Cabecera edición ── */
+.ed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 48px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ed-header-left {
+  display: flex;
+  gap: 24px;
+  align-items: baseline;
+}
+
+.ed-num {
+  font-size: 28px; font-weight: 700;
+  color: var(--text); letter-spacing: -.5px;
+}
+
+.ed-sede {
+  font-size: 12px; font-weight: 300;
+  color: var(--muted);
+}
+
+.ed-link {
+  font-size: 11px; font-weight: 400;
+  color: var(--gold);
+  border-bottom: 1px solid rgba(184,134,42,.3);
+  padding-bottom: 2px;
+  transition: border-color .15s;
+}
+.ed-link:hover { border-color: var(--gold); }
+
+/* ── Tabla ganadores ── */
+.winners-table {
+  border-top: 1px solid var(--line);
+}
+
+.winners-head {
+  display: grid;
+  grid-template-columns: 300px 1fr 260px;
+  gap: 40px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.w-th {
+  font-size: 10px; font-weight: 400;
+  color: var(--muted); letter-spacing: .5px;
+}
+.w-th-r { text-align: right; }
+
+.winner-row {
+  display: grid;
+  grid-template-columns: 300px 1fr 260px;
+  gap: 40px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+  transition: opacity .15s;
+}
+.winner-row:hover { opacity: .5; }
+
+.w-cat {
+  font-size: 11px; font-weight: 400;
+  color: var(--gold); letter-spacing: .1px;
+  padding-top: 3px;
+}
+
+.w-obra-wrap { display: flex; flex-direction: column; gap: 4px; }
+
+.w-obra {
+  font-size: 18px; font-weight: 400;
+  color: var(--text); letter-spacing: -.15px;
+  line-height: 1.2;
+}
+
+.w-prod {
+  font-size: 11px; font-weight: 300;
+  color: var(--muted);
+}
+
+.w-meta {
+  font-size: 12px; font-weight: 300;
+  color: var(--muted);
+  text-align: right; padding-top: 3px;
+}
+</style>
+
+<script>
+const btns = document.querySelectorAll<HTMLButtonElement>('.year-btn');
+const panels = document.querySelectorAll<HTMLElement>('.palm-panel');
+
+btns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const year = btn.dataset.year;
+
+    btns.forEach(b => {
+      b.classList.remove('year-btn--on');
+      b.setAttribute('aria-pressed', 'false');
+    });
+    btn.classList.add('year-btn--on');
+    btn.setAttribute('aria-pressed', 'true');
+
+    panels.forEach(p => {
+      if (p.dataset.year === year) {
+        p.classList.add('palm-panel--on');
+        p.setAttribute('aria-hidden', 'false');
+      } else {
+        p.classList.remove('palm-panel--on');
+        p.setAttribute('aria-hidden', 'true');
+      }
+    });
+  });
+});
+</script>

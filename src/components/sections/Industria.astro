@@ -1,0 +1,142 @@
+---
+// src/components/sections/Industria.astro
+import { useTranslations, type Lang } from '../../lib/i18n';
+
+interface ForoData {
+  nReuniones?: number;
+  nProfesionales?: number;
+  nPaises?: number;
+}
+
+interface Props {
+  lang?: Lang;
+  foro?: ForoData;
+}
+
+const { lang = 'es', foro } = Astro.props;
+const t = useTranslations(lang);
+
+const programas = [
+  {
+    num: '01',
+    nombre: 'Foro de Coproducción y Negocios',
+    descripcion: 'Punto de encuentro del sector iberoamericano: pitching, speed meetings y networking entre productoras de ambos lados del océano.',
+    estadistica: `${foro?.nReuniones ?? '1.500'}+ reuniones · ${foro?.nProfesionales ?? '240'} profesionales · ${foro?.nPaises ?? '25'}+ países`,
+    href: '/industria#foro',
+  },
+  {
+    num: '02',
+    nombre: 'Quirino Lab',
+    descripcion: 'Laboratorio de desarrollo para proyectos de animación iberoamericanos en fase inicial. Ocho proyectos seleccionados por edición.',
+    estadistica: '8 proyectos · 5 países · 100% coproducción',
+    href: '/industria#lab',
+  },
+  {
+    num: '03',
+    nombre: 'Laboratorio de Futuros',
+    descripcion: 'Encuentro de expertos internacionales sobre tendencias, tecnología e innovación en la industria de la animación global.',
+    estadistica: '12 ponentes · 2 días · internacional',
+    href: '/industria#futuros',
+  },
+];
+---
+
+<section class="industria reveal" id="industria">
+  <div class="ind-header">
+    <h2 class="ind-h-title">
+      {t('industria.label')}<br>
+      <span>Tenerife</span>
+    </h2>
+    <p class="ind-h-body">
+      Más allá de los premios: tres programas que articulan el encuentro profesional
+      de la animación iberoamericana cada año en Santa Cruz de Tenerife.
+    </p>
+  </div>
+
+  <div class="ind-table" role="table" aria-label="Programas de industria">
+    <div class="ind-head-row" role="row">
+      <span class="ind-col-h" role="columnheader">{t('col.num')}</span>
+      <span class="ind-col-h" role="columnheader">{t('col.programa')}</span>
+      <span class="ind-col-h ind-col-right" role="columnheader">{t('col.estadistica')}</span>
+    </div>
+
+    {programas.map((p) => (
+      <a class="ind-row" href={p.href} role="row">
+        <span class="ind-num">{p.num}</span>
+        <div class="ind-body">
+          <span class="ind-name">{p.nombre}</span>
+          <span class="ind-desc">{p.descripcion}</span>
+        </div>
+        <span class="ind-stat">{p.estadistica}</span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+.industria {
+  padding: var(--section-v) var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.ind-header {
+  display: grid; grid-template-columns: 1fr 340px;
+  gap: 80px; margin-bottom: 56px; align-items: end;
+}
+
+.ind-h-title {
+  font-size: clamp(52px, 5.5vw, 80px); font-weight: 700; color: var(--text);
+  line-height: 0.93; letter-spacing: -2px; text-transform: uppercase;
+}
+.ind-h-title span { color: var(--muted); font-weight: 300; }
+
+.ind-h-body {
+  font-size: 13px; font-weight: 300; color: var(--muted);
+  line-height: 1.9; align-self: end;
+}
+
+.ind-table {
+  display: flex; flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+.ind-head-row {
+  display: grid; grid-template-columns: 40px 1fr 200px;
+  padding: 10px 0; border-bottom: 1px solid var(--line);
+}
+
+.ind-col-h {
+  font-size: 10px; font-weight: 400; color: var(--muted); letter-spacing: .5px;
+}
+.ind-col-right { text-align: right; }
+
+.ind-row {
+  display: grid; grid-template-columns: 40px 1fr 200px;
+  padding: 24px 0; border-bottom: 1px solid var(--line);
+  align-items: start; cursor: pointer; transition: opacity .15s;
+}
+.ind-row:hover { opacity: .5; }
+
+.ind-num {
+  font-size: 11px; font-weight: 400; color: var(--muted); padding-top: 3px;
+}
+
+.ind-body {
+  display: flex; flex-direction: column; gap: 6px;
+}
+
+.ind-name {
+  font-size: 18px; font-weight: 400; color: var(--text);
+  letter-spacing: -.15px; line-height: 1.2;
+}
+
+.ind-desc {
+  font-size: 12px; font-weight: 300; color: var(--muted);
+  line-height: 1.75; max-width: 480px;
+}
+
+.ind-stat {
+  font-size: 11px; font-weight: 400; color: var(--muted);
+  text-align: right; padding-top: 3px; line-height: 1.7;
+}
+</style>

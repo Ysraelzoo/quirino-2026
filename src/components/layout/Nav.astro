@@ -1,0 +1,116 @@
+---
+// src/components/layout/Nav.astro
+import { useTranslations, type Lang } from '../../lib/i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<nav id="nav" class="over-dark">
+  <div class="nav-left">
+    <a class="nav-logo" href="/">( <span class="mark">Quirino</span> )</a>
+    <div class="nav-links">
+      <a class="nav-link" href="#premios">{t('nav.premios')}</a>
+      <a class="nav-link" href="/industria">{t('nav.industria')}</a>
+      <a class="nav-link" href="/palmares">{t('nav.palmares')}</a>
+      <a class="nav-link" href="/prensa">{t('nav.prensa')}</a>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="nav-langs">
+      <a class="nav-lang" href="/es" class:list={[{ on: lang === 'es' }]}>ES</a>
+      <a class="nav-lang" href="/pt" class:list={[{ on: lang === 'pt' }]}>PT</a>
+      <a class="nav-lang" href="/en" class:list={[{ on: lang === 'en' }]}>EN</a>
+    </div>
+    <a class="nav-cta" href="#inscripcion">{t('nav.cta')}</a>
+  </div>
+</nav>
+
+<style>
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 20px var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background .35s ease, border-color .35s ease;
+}
+
+nav.over-dark  { background: transparent; }
+nav.over-light {
+  background: rgba(250, 249, 247, 0.97);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(12px);
+}
+
+.nav-left  { display: flex; align-items: center; gap: 32px; }
+.nav-right { display: flex; align-items: center; gap: 20px; }
+
+.nav-logo {
+  font-size: 12px; font-weight: 400; letter-spacing: .4px;
+  color: rgba(250,249,247,.7);
+  transition: color .2s;
+}
+nav.over-light .nav-logo { color: var(--text); }
+.nav-logo .mark { color: var(--gold); }
+
+.nav-links { display: flex; gap: 24px; }
+.nav-link {
+  font-size: 11px; font-weight: 400; letter-spacing: .3px;
+  color: rgba(250,249,247,.35);
+  transition: color .2s;
+}
+.nav-link:hover, .nav-link.on { color: rgba(250,249,247,.85); }
+nav.over-light .nav-link       { color: var(--muted); }
+nav.over-light .nav-link:hover { color: var(--text); }
+
+.nav-langs { display: flex; gap: 4px; }
+.nav-lang {
+  font-size: 11px; font-weight: 400; letter-spacing: .3px;
+  color: rgba(250,249,247,.3); padding: 2px 4px;
+  border-bottom: 1px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+.nav-lang:hover, .nav-lang.on { color: var(--gold); border-color: var(--gold); }
+nav.over-light .nav-lang       { color: var(--muted); }
+
+.nav-cta {
+  font-size: 11px; font-weight: 500; letter-spacing: .3px;
+  color: rgba(250,249,247,.7);
+  border-bottom: 1px solid rgba(250,249,247,.3);
+  padding-bottom: 1px;
+  transition: color .2s, border-color .2s;
+}
+.nav-cta:hover { color: var(--gold); border-color: var(--gold); }
+nav.over-light .nav-cta { color: var(--text); border-color: var(--text); }
+</style>
+
+<script>
+const nav  = document.getElementById('nav');
+const hero = document.getElementById('hero');
+
+function updateNav() {
+  if (!nav || !hero) return;
+  const below = hero.getBoundingClientRect().bottom <= 0;
+  nav.classList.toggle('over-light', below);
+  nav.classList.toggle('over-dark',  !below);
+}
+
+updateNav();
+window.addEventListener('scroll', updateNav, { passive: true });
+
+// Smooth scroll para links internos
+document.querySelectorAll('.nav-link[href^="#"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector((link as HTMLAnchorElement).getAttribute('href')!);
+    target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>

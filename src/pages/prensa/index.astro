@@ -1,0 +1,241 @@
+---
+// src/pages/prensa/index.astro
+import Page from '../../layouts/Page.astro';
+import { getNoticias } from '../../lib/queries';
+import type { Lang } from '../../lib/i18n';
+
+const lang: Lang = 'es';
+
+let noticias: any[] = [];
+try {
+  noticias = await getNoticias(50);
+} catch (e) {}
+
+// Placeholder completo
+const noticiasFallback = noticias.length > 0 ? noticias : [
+  { _id: '1', titulo: { es: 'Abierta la convocatoria oficial de los Premios Quirino 2026', pt: '', en: '' }, extracto: { es: 'Las producciones estrenadas durante 2025 pueden inscribirse hasta el 15 de marzo.' }, slug: { current: 'convocatoria-2026' }, categoria: 'Convocatoria', fecha: '2026-02-14' },
+  { _id: '2', titulo: { es: 'Récord de participantes en el Foro de Coproducción y Negocios', pt: '', en: '' }, extracto: { es: 'La edición 2026 supera las 300 empresas inscritas, un 25% más que el año anterior.' }, slug: { current: 'record-foro-2026' }, categoria: 'Foro', fecha: '2026-02-08' },
+  { _id: '3', titulo: { es: 'Seleccionados los 8 proyectos de Quirino Lab 2026', pt: '', en: '' }, extracto: { es: 'Propuestas de Argentina, Brasil, España, México y Chile con alto potencial de coproducción.' }, slug: { current: 'quirino-lab-2026' }, categoria: 'Quirino Lab', fecha: '2026-02-01' },
+  { _id: '4', titulo: { es: 'El jurado internacional de los Quirino 2026 ya está confirmado', pt: '', en: '' }, extracto: { es: 'Nueve profesionales de siete países valorarán las obras inscritas en las diez categorías.' }, slug: { current: 'jurado-2026' }, categoria: 'Premios', fecha: '2026-01-22' },
+  { _id: '5', titulo: { es: 'Los Premios Quirino en el festival de Annecy 2025', pt: '', en: '' }, extracto: { es: 'El equipo del festival estuvo presente en el stand de España con una presentación especial.' }, slug: { current: 'annecy-2025' }, categoria: 'Internacional', fecha: '2025-06-12' },
+  { _id: '6', titulo: { es: 'Balance de la 8ª edición: 312 obras inscritas', pt: '', en: '' }, extracto: { es: 'El certamen bate récords con obras de 22 países y un fuerte incremento en videojuegos.' }, slug: { current: 'balance-octava-edicion' }, categoria: 'Premios', fecha: '2025-05-03' },
+  { _id: '7', titulo: { es: 'Los ganadores de los Premios Quirino 2025', pt: '', en: '' }, extracto: { es: 'Ceremonia de entrega en el Auditorio Adán Martín con 400 profesionales del sector.' }, slug: { current: 'ganadores-2025' }, categoria: 'Premios', fecha: '2025-04-26' },
+  { _id: '8', titulo: { es: 'Quirino Lab 2025: los ocho proyectos seleccionados', pt: '', en: '' }, extracto: { es: 'Una cosecha excepcional con propuestas innovadoras de toda Iberoamérica.' }, slug: { current: 'lab-2025' }, categoria: 'Quirino Lab', fecha: '2025-02-10' },
+];
+
+// Extraer categorías únicas para filtro visual
+const categorias = [...new Set(noticiasFallback.map((n) => n.categoria))];
+
+function formatFecha(fecha: string) {
+  return new Date(fecha).toLocaleDateString('es-ES', {
+    day: 'numeric', month: 'short', year: 'numeric'
+  });
+}
+---
+
+<Page
+  title="Prensa — Premios Quirino"
+  description="Sala de prensa de los Premios Quirino. Novedades, notas de prensa y recursos para medios."
+  lang={lang}
+>
+
+  <!-- ── Header oscuro ── -->
+  <section class="prensa-hero" id="hero">
+    <div class="ph-inner">
+      <div>
+        <div class="ph-label">Premios Quirino · Sala de prensa</div>
+        <h1 class="ph-title">Prensa</h1>
+      </div>
+      <p class="ph-sub">
+        Novedades, notas de prensa y recursos para medios sobre los
+        Premios Quirino de la Animación Iberoamericana.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Listado de noticias ── -->
+  <section class="prensa-lista">
+
+    <!-- Categorías -->
+    <div class="prensa-cats">
+      <span class="pcat-label">Filtrar por</span>
+      <div class="pcat-list">
+        <button class="pcat-btn pcat-btn--on" data-cat="all">Todas</button>
+        {categorias.map((cat) => (
+          <button class="pcat-btn" data-cat={cat}>{cat}</button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Tabla -->
+    <div class="news-table" role="table" aria-label="Listado de noticias">
+      <div class="news-head" role="row">
+        <span class="news-th" role="columnheader">Fecha</span>
+        <span class="news-th" role="columnheader">Área</span>
+        <span class="news-th" role="columnheader">Noticia</span>
+      </div>
+
+      {noticiasFallback.map((n) => (
+        <a
+          class="news-row"
+          href={`/prensa/${n.slug.current}`}
+          data-cat={n.categoria}
+          role="row"
+        >
+          <time class="news-date" datetime={n.fecha}>{formatFecha(n.fecha)}</time>
+          <span class="news-cat">{n.categoria}</span>
+          <div class="news-content">
+            <h2 class="news-titulo">{n.titulo[lang] || n.titulo.es}</h2>
+            <p class="news-extracto">{n.extracto?.[lang] || n.extracto?.es}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+
+  </section>
+
+</Page>
+
+<style>
+/* ── Header ── */
+.prensa-hero {
+  background: var(--ink);
+  padding: 160px var(--gutter) 80px;
+}
+
+.ph-inner {
+  display: grid;
+  grid-template-columns: 1fr 440px;
+  gap: 80px;
+  align-items: end;
+}
+
+.ph-label {
+  font-size: 11px; font-weight: 300;
+  color: rgba(250,249,247,.3); letter-spacing: .6px;
+  margin-bottom: 24px;
+}
+
+.ph-title {
+  font-size: clamp(64px, 9vw, 118px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 0.92;
+  letter-spacing: -3px;
+  text-transform: uppercase;
+}
+
+.ph-sub {
+  font-size: 14px; font-weight: 300;
+  color: rgba(250,249,247,.4);
+  line-height: 1.85; align-self: end;
+}
+
+/* ── Lista ── */
+.prensa-lista {
+  padding: var(--section-v) var(--gutter);
+}
+
+/* ── Filtro categorías ── */
+.prensa-cats {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 56px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.pcat-label {
+  font-size: 10px; font-weight: 400;
+  color: var(--muted); letter-spacing: .5px;
+  white-space: nowrap;
+}
+
+.pcat-list {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+
+.pcat-btn {
+  font-size: 11px; font-weight: 400;
+  color: var(--muted);
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color .15s, border-color .15s;
+  font-family: var(--sans);
+}
+.pcat-btn:hover { color: var(--text); border-color: var(--text); }
+.pcat-btn--on { color: var(--text); border-color: var(--text); }
+.pcat-btn.hidden { display: none; }
+
+/* ── Tabla ── */
+.news-table { border-top: 1px solid var(--line); }
+
+.news-head {
+  display: grid;
+  grid-template-columns: 160px 120px 1fr;
+  gap: 40px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.news-th {
+  font-size: 10px; font-weight: 400;
+  color: var(--muted); letter-spacing: .5px;
+}
+
+.news-row {
+  display: grid;
+  grid-template-columns: 160px 120px 1fr;
+  gap: 40px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+  transition: opacity .15s;
+}
+.news-row:hover { opacity: .5; }
+.news-row.filtered-out { display: none; }
+
+.news-date {
+  font-size: 12px; font-weight: 300; color: var(--muted); padding-top: 3px;
+}
+
+.news-cat {
+  font-size: 11px; font-weight: 400; color: var(--muted); padding-top: 3px;
+}
+
+.news-titulo {
+  font-size: 18px; font-weight: 400; color: var(--text);
+  line-height: 1.25; letter-spacing: -.15px; margin-bottom: 8px;
+}
+
+.news-extracto {
+  font-size: 13px; font-weight: 300; color: var(--muted);
+  line-height: 1.7; max-width: 560px;
+}
+</style>
+
+<script>
+// Filtro de categorías
+const btns = document.querySelectorAll<HTMLButtonElement>('.pcat-btn');
+const rows = document.querySelectorAll<HTMLElement>('.news-row');
+
+btns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const cat = btn.dataset.cat;
+
+    btns.forEach(b => b.classList.remove('pcat-btn--on'));
+    btn.classList.add('pcat-btn--on');
+
+    rows.forEach(row => {
+      if (cat === 'all' || row.dataset.cat === cat) {
+        row.classList.remove('filtered-out');
+      } else {
+        row.classList.add('filtered-out');
+      }
+    });
+  });
+});
+</script>

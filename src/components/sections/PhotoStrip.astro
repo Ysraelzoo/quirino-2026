@@ -1,0 +1,99 @@
+---
+// src/components/sections/PhotoStrip.astro
+// Tira de 5 fotos a sangra — rompe el gutter del layout
+
+interface Foto {
+  pais: string;
+  estudio: string;
+  imageUrl?: string;
+  gradient?: string;
+}
+
+interface Props {
+  fotos?: Foto[];
+}
+
+const { fotos } = Astro.props;
+
+// Gradientes placeholder oscuros hasta que lleguen fotos reales de Sanity
+const fotosFallback: Foto[] = fotos?.length ? fotos : [
+  { pais: 'España',    estudio: 'Perroflautas',        gradient: 'linear-gradient(135deg, #1a1410 0%, #2d2018 100%)' },
+  { pais: 'Brasil',    estudio: 'Estúdio Bossa Nova',  gradient: 'linear-gradient(135deg, #0d1a10 0%, #182d1e 100%)' },
+  { pais: 'México',    estudio: 'Animex Studios',      gradient: 'linear-gradient(135deg, #1a100d 0%, #2d1a14 100%)' },
+  { pais: 'Argentina', estudio: 'Baires Animation',    gradient: 'linear-gradient(135deg, #0d1018 0%, #14182d 100%)' },
+  { pais: 'Portugal',  estudio: 'Porto Animação',      gradient: 'linear-gradient(135deg, #181210 0%, #2d1e18 100%)' },
+];
+---
+
+<div class="photostrip">
+  {fotosFallback.map((foto) => (
+    <div
+      class="ps-item"
+      style={foto.imageUrl
+        ? `background-image: url('${foto.imageUrl}')`
+        : foto.gradient
+      }
+    >
+      <div class="ps-overlay" aria-hidden="true"></div>
+      <div class="ps-label">
+        <span class="ps-pais">{foto.pais}</span>
+        <span class="ps-estudio">{foto.estudio}</span>
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+.photostrip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  height: 260px;
+  /* Sangra hasta los bordes del layout */
+  margin: 0 calc(var(--gutter) * -1);
+  overflow: hidden;
+}
+
+.ps-item {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--ink);
+  cursor: pointer;
+  overflow: hidden;
+  transition: flex .3s ease;
+}
+
+.ps-item:hover { flex: 1.25; }
+
+.ps-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0) 30%,
+    rgba(0,0,0,.72) 100%
+  );
+  transition: opacity .25s;
+}
+.ps-item:hover .ps-overlay { opacity: .6; }
+
+.ps-label {
+  position: absolute;
+  bottom: 16px; left: 14px;
+  display: flex; flex-direction: column; gap: 2px;
+  z-index: 1;
+}
+
+.ps-pais {
+  font-size: 11px; font-weight: 500;
+  color: rgba(250,249,247,.9);
+  letter-spacing: .3px;
+  line-height: 1;
+}
+
+.ps-estudio {
+  font-size: 10px; font-weight: 300;
+  color: rgba(250,249,247,.45);
+  letter-spacing: .2px;
+  line-height: 1;
+}
+</style>

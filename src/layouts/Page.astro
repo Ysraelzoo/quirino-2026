@@ -1,0 +1,24 @@
+---
+// src/layouts/Page.astro
+// Layout principal para páginas con Nav + Footer
+
+import Base from './Base.astro';
+import Nav from '../components/layout/Nav.astro';
+import Footer from '../components/layout/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: 'es' | 'pt' | 'en';
+}
+
+const { title, description, lang = 'es' } = Astro.props;
+---
+
+<Base title={title} description={description} lang={lang}>
+  <Nav lang={lang} />
+  <main>
+    <slot />
+  </main>
+  <Footer lang={lang} />
+</Base>

@@ -1,0 +1,100 @@
+---
+// src/components/sections/Categorias.astro
+import { useTranslations, type Lang } from '../../lib/i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = useTranslations(lang);
+
+const categorias = [
+  { num: '01', nombre: 'Mejor Largometraje Iberoamericano',         tipo: 'Ficción' },
+  { num: '02', nombre: 'Mejor Largometraje Europeo-Iberoamericano', tipo: 'Coproducción' },
+  { num: '03', nombre: 'Mejor Serie de Animación',                  tipo: 'TV · Streaming' },
+  { num: '04', nombre: 'Mejor Cortometraje',                        tipo: 'Ficción · Experimental' },
+  { num: '05', nombre: 'Mejor Videojuego',                          tipo: 'Interactivo' },
+  { num: '06', nombre: 'Mejor Producción de Encargo',               tipo: 'Branded' },
+  { num: '07', nombre: 'Mejor Producción de Escuela',               tipo: 'Estudiantes' },
+  { num: '08', nombre: 'Premio del Público',                        tipo: 'Votación popular' },
+  { num: '09', nombre: 'Premio Especial del Jurado',                tipo: 'Discrecional' },
+  { num: '10', nombre: 'Premio Trayectoria Iberoamericana',         tipo: 'Honor' },
+];
+---
+
+<section class="categorias reveal">
+  <div class="cat-header">
+    <h2 class="cat-h-title">
+      {t('cat.label')}<br>
+      <span>2026</span>
+    </h2>
+    <p class="cat-h-body">
+      Todas las formas de la animación iberoamericana. Obras producidas o estrenadas
+      entre el 1 de enero y el 31 de diciembre de 2025 son elegibles para inscripción.
+    </p>
+  </div>
+
+  <div class="cat-table" role="table" aria-label="Categorías de los Premios Quirino 2026">
+    <div class="cat-head-row" role="row">
+      <span class="cat-col-h" role="columnheader">{t('col.num')}</span>
+      <span class="cat-col-h" role="columnheader">{t('col.categoria')}</span>
+      <span class="cat-col-h cat-col-right" role="columnheader">{t('col.tipo')}</span>
+    </div>
+
+    {categorias.map((cat) => (
+      <div class="cat-row" role="row">
+        <span class="cat-num">{cat.num}</span>
+        <span class="cat-name">{cat.nombre}</span>
+        <span class="cat-type">{cat.tipo}</span>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+.categorias { padding: var(--section-v) var(--gutter); }
+
+.cat-header {
+  display: grid; grid-template-columns: 1fr 340px;
+  gap: 80px; margin-bottom: 56px; align-items: end;
+}
+
+.cat-h-title {
+  font-size: clamp(52px, 5.5vw, 80px); font-weight: 700; color: var(--text);
+  line-height: 0.93; letter-spacing: -2px; text-transform: uppercase;
+}
+.cat-h-title span { color: var(--muted); font-weight: 300; }
+
+.cat-h-body {
+  font-size: 13px; font-weight: 300; color: var(--muted);
+  line-height: 1.9; align-self: end;
+}
+
+.cat-table {
+  display: flex; flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+.cat-head-row {
+  display: grid; grid-template-columns: 40px 1fr 160px;
+  padding: 10px 0; border-bottom: 1px solid var(--line);
+}
+
+.cat-col-h {
+  font-size: 10px; font-weight: 400; color: var(--muted); letter-spacing: .5px;
+}
+.cat-col-right { text-align: right; }
+
+.cat-row {
+  display: grid; grid-template-columns: 40px 1fr 160px;
+  padding: 18px 0; border-bottom: 1px solid var(--line);
+  cursor: pointer; transition: padding-left .18s ease;
+}
+.cat-row:hover { padding-left: 8px; }
+.cat-row:hover .cat-name { color: var(--ink); }
+
+.cat-num  { font-size: 11px; font-weight: 400; color: var(--muted); align-self: center; }
+.cat-name { font-size: 18px; font-weight: 400; color: var(--text); align-self: center; letter-spacing: -.15px; transition: color .15s; }
+.cat-type { font-size: 11px; font-weight: 400; color: var(--muted); align-self: center; text-align: right; }
+</style>

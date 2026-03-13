@@ -1,0 +1,108 @@
+---
+// src/components/sections/Patrocinadores.astro
+import { useTranslations, type Lang } from '../../lib/i18n';
+import { urlFor } from '../../lib/sanity';
+
+interface Patrocinador {
+  nombre: string;
+  url?: string;
+  nivel?: 'principal' | 'oro' | 'plata' | 'colaborador';
+  tipo?: 'institucional' | 'privado' | 'mediaPartner';
+  logo?: any;
+}
+
+interface Props {
+  lang?: Lang;
+  patrocinadores?: Patrocinador[];
+  year?: number;
+}
+
+const { lang = 'es', patrocinadores, year = 2026 } = Astro.props;
+const t = useTranslations(lang);
+
+const patrocinadoresFallback: Patrocinador[] = patrocinadores?.length ? patrocinadores : [
+  { nombre: 'Gobierno de Canarias', nivel: 'principal', url: '#' },
+  { nombre: 'Cabildo de Tenerife',  nivel: 'principal', url: '#' },
+  { nombre: 'RTVE',                 nivel: 'oro',        url: '#' },
+  { nombre: 'ICAA',                 nivel: 'oro',        url: '#' },
+  { nombre: 'MAPFRE',               nivel: 'plata',      url: '#' },
+  { nombre: 'Animación en Español', nivel: 'colaborador',url: '#' },
+];
+---
+
+<section class="patrocinadores" id="patrocinadores">
+  <div class="pat-inner">
+    <span class="pat-label">{t('patrocinadores.label')} {year}</span>
+
+    <div class="pat-logos">
+      {patrocinadoresFallback.map((p) => (
+        <a
+          class:list={['pat-item', p.nivel]}
+          href={p.url ?? '#'}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={p.nombre}
+          title={p.nombre}
+        >
+          {p.logo
+            ? <img
+                src={urlFor(p.logo).height(48).auto('format').url()}
+                alt={p.nombre}
+                class="pat-logo-img"
+                loading="lazy"
+                height="48"
+              />
+            : <span class="pat-nombre">{p.nombre}</span>
+          }
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+.patrocinadores {
+  padding: 48px var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.pat-inner {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.pat-label {
+  font-size: 10px; font-weight: 400;
+  color: var(--muted); letter-spacing: .6px;
+  white-space: nowrap;
+}
+
+.pat-logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 32px;
+}
+
+/* ── Logo imagen ── */
+.pat-logo-img {
+  height: 32px; width: auto; object-fit: contain;
+  filter: grayscale(1) opacity(.55);
+  transition: filter .2s;
+  display: block;
+}
+.pat-item.principal .pat-logo-img { height: 40px; filter: grayscale(1) opacity(.75); }
+.pat-item.colaborador .pat-logo-img { height: 24px; filter: grayscale(1) opacity(.4); }
+.pat-item:hover .pat-logo-img { filter: grayscale(0) opacity(1); }
+
+/* ── Nombre texto (sin logo) ── */
+.pat-nombre {
+  font-size: 12px; font-weight: 400; color: var(--muted);
+  transition: color .15s; white-space: nowrap;
+}
+.pat-item.principal .pat-nombre { font-size: 13px; font-weight: 500; color: var(--text); }
+.pat-item.colaborador .pat-nombre { font-size: 11px; font-weight: 300; color: var(--dim); }
+.pat-item:hover .pat-nombre { color: var(--text); }
+</style>

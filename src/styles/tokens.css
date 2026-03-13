@@ -1,0 +1,33 @@
+/* ════════════════════════════════════════
+   QUIRINO — tokens.css
+   Design tokens del sistema visual
+   Paleta: Papel / Tinta / Oro
+   ════════════════════════════════════════ */
+
+:root {
+  /* ── Fondos ── */
+  --paper:       #faf9f7;   /* Fondo principal */
+  --paper-warm:  #f3f1ee;   /* Fondo alternativo */
+  --ink:         #0a0a0a;   /* Negro — hero, footer */
+  --ink-mid:     #111111;   /* Negro panel */
+
+  /* ── Texto ── */
+  --text:        #1a1a1a;   /* Texto principal */
+  --muted:       #999999;   /* Texto secundario / labels */
+  --dim:         #cccccc;   /* Texto muy secundario */
+
+  /* ── Bordes ── */
+  --line:        #d8d6d2;   /* Línea principal */
+  --line-lt:     #ebebeb;   /* Línea sutil */
+
+  /* ── Acento único ── */
+  --gold:        #b8862a;
+  --gold-lt:     #d4a44a;
+
+  /* ── Tipografía ── */
+  --sans: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* ── Espaciado ── */
+  --gutter:      28px;
+  --section-v:   120px;
+}

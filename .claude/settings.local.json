@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Usuario/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/b851686e-b69b-4a2f-89d9-955f99e3a0cb/1a130b56-e821-4b75-b806-70a51e376a08/skills/docx/**)",
+      "Bash(pandoc --track-changes=all \"C:\\\\Users\\\\Usuario\\\\Downloads\\\\quirino-claudecode-briefing.docx\" -o output.md)",
+      "Bash(pandoc --track-changes=all \"C:\\\\Users\\\\Usuario\\\\Downloads\\\\quirino-claudecode-briefing.docx\" -t markdown)",
+      "Bash(where pandoc:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(New-Item -ItemType Directory -Force -Path \"C:\\\\Users\\\\Usuario\\\\iCloudDrive\\\\WORK\\\\3DWIRE\\\\PREMIOS QUIRINO\\\\WEBSITE QUIRINO 2026\\\\quirino\\\\src\\\\pages\\\\palmares\")"
+    ]
+  }
+}

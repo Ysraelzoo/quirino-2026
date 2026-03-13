@@ -1,0 +1,388 @@
+---
+// src/pages/industria/index.astro
+import Page from '../../layouts/Page.astro';
+import { getQuirinoLab } from '../../lib/queries';
+import type { Lang } from '../../lib/i18n';
+
+const lang: Lang = 'es';
+
+let proyectosLab: any[] = [];
+try {
+  proyectosLab = await getQuirinoLab(2026);
+} catch (e) {}
+
+// Placeholder proyectos lab
+const labFallback = proyectosLab.length > 0 ? proyectosLab : [
+  { _id: '1', tituloProyecto: { es: 'El último vuelo del cóndor', pt: '', en: '' }, estudio: 'Cóndor Films', pais: 'Chile', descripcion: { es: 'Largometraje de animación sobre la migración andina.' } },
+  { _id: '2', tituloProyecto: { es: 'Mariposa Robot', pt: '', en: '' }, estudio: 'Baires Animation', pais: 'Argentina', descripcion: { es: 'Serie para niños sobre tecnología y naturaleza.' } },
+  { _id: '3', tituloProyecto: { es: 'Florestas de Luz', pt: '', en: '' }, estudio: 'Porto Animação', pais: 'Portugal', descripcion: { es: 'Cortometraje experimental sobre la deforestación.' } },
+  { _id: '4', tituloProyecto: { es: 'Barrio del Sol', pt: '', en: '' }, estudio: 'Animex Studios', pais: 'México', descripcion: { es: 'Comedia familiar sobre un barrio de Ciudad de México.' } },
+  { _id: '5', tituloProyecto: { es: 'Orixás', pt: '', en: '' }, estudio: 'Estúdio Bossa Nova', pais: 'Brasil', descripcion: { es: 'Mitología afrobrasileña en formato de serie.' } },
+  { _id: '6', tituloProyecto: { es: 'Los niños de la lluvia', pt: '', en: '' }, estudio: 'Perroflautas', pais: 'España', descripcion: { es: 'Historia de dos hermanos en una aldea gallega.' } },
+  { _id: '7', tituloProyecto: { es: 'Pachamama', pt: '', en: '' }, estudio: 'Cinecolor Bolivia', pais: 'Bolivia', descripcion: { es: 'Documental animado sobre la cosmovisión andina.' } },
+  { _id: '8', tituloProyecto: { es: 'Río sin nombre', pt: '', en: '' }, estudio: 'Bogotá Toons', pais: 'Colombia', descripcion: { es: 'Thriller de animación adulta sobre el conflicto interior.' } },
+];
+---
+
+<Page
+  title="Industria — Premios Quirino"
+  description="Foro de Coproducción y Negocios, Quirino Lab y Laboratorio de Futuros. El ecosistema profesional de la animación iberoamericana."
+  lang={lang}
+>
+
+  <!-- ── Header oscuro ── -->
+  <section class="ind-page-hero" id="hero">
+    <div class="iph-inner">
+      <div class="iph-label">Premios Quirino · 2026</div>
+      <h1 class="iph-title">Industria</h1>
+      <p class="iph-sub">
+        Tres programas que articulan el encuentro profesional de la animación
+        iberoamericana cada año en Santa Cruz de Tenerife.
+      </p>
+    </div>
+    <div class="iph-nav">
+      <a class="iph-nav-item" href="#foro">01 · Foro de Coproducción</a>
+      <a class="iph-nav-item" href="#lab">02 · Quirino Lab</a>
+      <a class="iph-nav-item" href="#futuros">03 · Lab. de Futuros</a>
+    </div>
+  </section>
+
+  <!-- ── 01 Foro de Coproducción ── -->
+  <section class="prog-section" id="foro">
+    <div class="prog-header">
+      <div class="prog-num">01</div>
+      <div class="prog-header-right">
+        <h2 class="prog-title">Foro de<br>Coproducción<br>y Negocios</h2>
+      </div>
+    </div>
+
+    <div class="prog-body">
+      <div class="prog-stats">
+        <div class="stat-item">
+          <span class="stat-val">1.500+</span>
+          <span class="stat-lab">reuniones</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">240</span>
+          <span class="stat-lab">profesionales</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">25+</span>
+          <span class="stat-lab">países</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">9ª</span>
+          <span class="stat-lab">edición</span>
+        </div>
+      </div>
+
+      <div class="prog-desc">
+        <p>
+          El Foro de Coproducción y Negocios de los Premios Quirino es el mayor
+          punto de encuentro del sector de la animación iberoamericana. Durante
+          dos días, productoras de España, Portugal y Latinoamérica se reúnen
+          para desarrollar proyectos conjuntos, explorar acuerdos de distribución
+          y fortalecer el tejido profesional del sector.
+        </p>
+        <p>
+          La metodología del Foro combina sesiones de <em>speed meetings</em> —
+          encuentros uno a uno de 20 minutos — con pitchings públicos, mesas de
+          trabajo y actividades de networking.
+        </p>
+        <a class="prog-cta" href="#">Inscripción Foro 2026 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 02 Quirino Lab ── -->
+  <section class="prog-section prog-section--dark" id="lab">
+    <div class="prog-header">
+      <div class="prog-num">02</div>
+      <div class="prog-header-right">
+        <h2 class="prog-title">Quirino<br>Lab</h2>
+      </div>
+    </div>
+
+    <div class="prog-body">
+      <div class="prog-stats">
+        <div class="stat-item">
+          <span class="stat-val">8</span>
+          <span class="stat-lab">proyectos</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">5</span>
+          <span class="stat-lab">países</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">100%</span>
+          <span class="stat-lab">coproducción</span>
+        </div>
+      </div>
+
+      <div class="prog-desc">
+        <p>
+          Quirino Lab es el programa de desarrollo de proyectos de animación
+          iberoamericanos en fase inicial. Ocho proyectos seleccionados por edición
+          reciben tutoría especializada, conexiones con socios potenciales y
+          visibilidad ante el sector internacional.
+        </p>
+        <p>
+          Los proyectos participantes son presentados en sesión pública durante
+          el Foro y tienen acceso preferente al programa de coproducción.
+        </p>
+      </div>
+    </div>
+
+    <!-- Grid proyectos -->
+    <div class="lab-grid">
+      <div class="lab-grid-head">
+        <span>Proyecto</span>
+        <span>Estudio</span>
+        <span class="lab-col-r">País</span>
+      </div>
+      {labFallback.map((p) => (
+        <div class="lab-row">
+          <span class="lab-titulo">{p.tituloProyecto?.es || p.tituloProyecto}</span>
+          <span class="lab-estudio">{p.estudio}</span>
+          <span class="lab-pais">{p.pais}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── 03 Laboratorio de Futuros ── -->
+  <section class="prog-section" id="futuros">
+    <div class="prog-header">
+      <div class="prog-num">03</div>
+      <div class="prog-header-right">
+        <h2 class="prog-title">Laboratorio<br>de Futuros</h2>
+      </div>
+    </div>
+
+    <div class="prog-body">
+      <div class="prog-stats">
+        <div class="stat-item">
+          <span class="stat-val">12</span>
+          <span class="stat-lab">ponentes</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">2</span>
+          <span class="stat-lab">días</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">INT</span>
+          <span class="stat-lab">internacional</span>
+        </div>
+      </div>
+
+      <div class="prog-desc">
+        <p>
+          El Laboratorio de Futuros reúne a expertos internacionales para
+          explorar las tendencias, tecnologías e innovaciones que están
+          transformando la industria de la animación global: inteligencia
+          artificial, realidad extendida, nuevos modelos de distribución
+          y co-producción internacional.
+        </p>
+        <p>
+          Con ponencias magistrales, mesas redondas y talleres prácticos,
+          el Laboratorio es un espacio de reflexión abierto a profesionales
+          del sector y al público general.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</Page>
+
+<style>
+/* ── Header oscuro ── */
+.ind-page-hero {
+  background: var(--ink);
+  padding: 160px var(--gutter) 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.iph-inner {
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 80px;
+  align-items: end;
+}
+
+.iph-label {
+  font-size: 11px; font-weight: 300;
+  color: rgba(250,249,247,.3); letter-spacing: .6px;
+  margin-bottom: 24px;
+}
+
+.iph-title {
+  font-size: clamp(64px, 9vw, 118px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 0.92;
+  letter-spacing: -3px;
+  text-transform: uppercase;
+  grid-column: 1;
+}
+
+.iph-sub {
+  font-size: 14px; font-weight: 300;
+  color: rgba(250,249,247,.45);
+  line-height: 1.8; align-self: end;
+}
+
+.iph-nav {
+  display: flex;
+  gap: 32px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding-top: 24px;
+}
+
+.iph-nav-item {
+  font-size: 11px; font-weight: 400;
+  color: rgba(250,249,247,.3); letter-spacing: .3px;
+  transition: color .2s;
+}
+.iph-nav-item:hover { color: rgba(250,249,247,.7); }
+
+/* ── Secciones de programa ── */
+.prog-section {
+  padding: var(--section-v) var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.prog-section--dark {
+  background: var(--ink);
+  border-top: none;
+}
+
+.prog-header {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 40px;
+  margin-bottom: 72px;
+}
+
+.prog-num {
+  font-size: 11px; font-weight: 400;
+  color: var(--muted); padding-top: 10px;
+}
+
+.prog-section--dark .prog-num { color: rgba(250,249,247,.25); }
+
+.prog-title {
+  font-size: clamp(52px, 5.5vw, 80px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 0.93;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+}
+
+.prog-section--dark .prog-title { color: #fff; }
+
+/* ── Body: stats + descripción ── */
+.prog-body {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 80px;
+  margin-bottom: 64px;
+}
+
+.prog-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+
+.prog-section--dark .stat-item { border-color: rgba(255,255,255,.08); }
+
+.stat-val {
+  font-size: 36px; font-weight: 700;
+  color: var(--text); line-height: 1;
+  letter-spacing: -1px;
+}
+
+.prog-section--dark .stat-val { color: #fff; }
+
+.stat-lab {
+  font-size: 11px; font-weight: 300;
+  color: var(--muted); letter-spacing: .3px;
+}
+
+.prog-desc {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.prog-desc p {
+  font-size: 15px; font-weight: 300;
+  color: var(--text); line-height: 1.85;
+}
+
+.prog-section--dark .prog-desc p { color: rgba(250,249,247,.55); }
+
+.prog-desc em { font-style: italic; color: var(--muted); }
+
+.prog-cta {
+  margin-top: 8px;
+  font-size: 12px; font-weight: 500;
+  color: var(--gold);
+  border-bottom: 1px solid var(--gold);
+  padding-bottom: 2px;
+  align-self: flex-start;
+  transition: opacity .15s;
+}
+.prog-cta:hover { opacity: .7; }
+
+/* ── Grid proyectos Lab ── */
+.lab-grid {
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.lab-grid-head {
+  display: grid;
+  grid-template-columns: 1fr 220px 120px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  font-size: 10px; font-weight: 400;
+  color: rgba(250,249,247,.22); letter-spacing: .5px;
+}
+
+.lab-col-r { text-align: right; }
+
+.lab-row {
+  display: grid;
+  grid-template-columns: 1fr 220px 120px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  transition: opacity .15s;
+}
+.lab-row:hover { opacity: .55; }
+
+.lab-titulo {
+  font-size: 16px; font-weight: 400;
+  color: rgba(250,249,247,.85); letter-spacing: -.1px;
+}
+
+.lab-estudio {
+  font-size: 12px; font-weight: 300;
+  color: rgba(250,249,247,.4); align-self: center;
+}
+
+.lab-pais {
+  font-size: 11px; font-weight: 400;
+  color: rgba(250,249,247,.3); align-self: center; text-align: right;
+}
+</style>

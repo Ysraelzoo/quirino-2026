@@ -1,0 +1,140 @@
+---
+// src/components/sections/Ediciones.astro
+import { useTranslations, type Lang } from '../../lib/i18n';
+
+interface Edicion {
+  year: number;
+  numero: number;
+  sede: string;
+  dato?: string;
+}
+
+interface Props {
+  lang?: Lang;
+  ediciones?: Edicion[];
+  edicionActual?: number;
+}
+
+const { lang = 'es', ediciones, edicionActual = 2026 } = Astro.props;
+const t = useTranslations(lang);
+
+const edicionesFallback: Edicion[] = ediciones?.length ? ediciones : [
+  { year: 2026, numero: 9, sede: 'Santa Cruz de Tenerife', dato: 'Convocatoria abierta' },
+  { year: 2025, numero: 8, sede: 'Santa Cruz de Tenerife', dato: '312 obras inscritas' },
+  { year: 2024, numero: 7, sede: 'Santa Cruz de Tenerife', dato: '289 obras inscritas' },
+  { year: 2023, numero: 6, sede: 'Santa Cruz de Tenerife', dato: '274 obras inscritas' },
+  { year: 2022, numero: 5, sede: 'Santa Cruz de Tenerife', dato: '261 obras inscritas' },
+  { year: 2021, numero: 4, sede: 'Santa Cruz de Tenerife', dato: '248 obras inscritas' },
+  { year: 2020, numero: 3, sede: 'Online', dato: 'Edición digital' },
+  { year: 2019, numero: 2, sede: 'Santa Cruz de Tenerife', dato: '190 obras inscritas' },
+  { year: 2018, numero: 1, sede: 'Santa Cruz de Tenerife', dato: 'Primera edición' },
+];
+---
+
+<section class="ediciones reveal" id="ediciones">
+  <div class="ed-header">
+    <h2 class="ed-h-title">
+      {t('ediciones.label')}<br>
+      <span>2018–2026</span>
+    </h2>
+    <p class="ed-h-body">
+      Nueve ediciones conectando la animación iberoamericana. Más de 2.500 obras inscritas
+      y 90 premios entregados a lo largo de la historia de los Quirino.
+    </p>
+  </div>
+
+  <div class="ed-table" role="table" aria-label="Historial de ediciones">
+    <div class="ed-head-row" role="row">
+      <span class="ed-col-h" role="columnheader">{t('col.edicion')}</span>
+      <span class="ed-col-h" role="columnheader">{t('col.sede')}</span>
+      <span class="ed-col-h ed-col-right" role="columnheader">{t('col.estadistica')}</span>
+    </div>
+
+    {edicionesFallback.map((ed) => (
+      <a
+        class:list={['ed-row', { featured: ed.year === edicionActual }]}
+        href={`/premios/${ed.year}`}
+        role="row"
+      >
+        <div class="ed-year-cell">
+          <span class="ed-year">{ed.year}</span>
+          <span class="ed-num">{ed.numero}ª</span>
+        </div>
+        <span class="ed-sede">{ed.sede}</span>
+        <span class="ed-dato">{ed.dato}</span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+.ediciones {
+  padding: var(--section-v) var(--gutter);
+  border-top: 1px solid var(--line);
+}
+
+.ed-header {
+  display: grid; grid-template-columns: 1fr 340px;
+  gap: 80px; margin-bottom: 56px; align-items: end;
+}
+
+.ed-h-title {
+  font-size: clamp(52px, 5.5vw, 80px); font-weight: 700; color: var(--text);
+  line-height: 0.93; letter-spacing: -2px; text-transform: uppercase;
+}
+.ed-h-title span { color: var(--muted); font-weight: 300; }
+
+.ed-h-body {
+  font-size: 13px; font-weight: 300; color: var(--muted);
+  line-height: 1.9; align-self: end;
+}
+
+.ed-table {
+  display: flex; flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+.ed-head-row {
+  display: grid; grid-template-columns: 140px 1fr 200px;
+  padding: 10px 0; border-bottom: 1px solid var(--line);
+}
+
+.ed-col-h {
+  font-size: 10px; font-weight: 400; color: var(--muted); letter-spacing: .5px;
+}
+.ed-col-right { text-align: right; }
+
+.ed-row {
+  display: grid; grid-template-columns: 140px 1fr 200px;
+  padding: 16px 0; border-bottom: 1px solid var(--line);
+  align-items: center; cursor: pointer;
+  transition: opacity .15s;
+}
+.ed-row:not(.featured):hover { opacity: .45; }
+.ed-row.featured { padding: 20px 0; }
+
+.ed-year-cell {
+  display: flex; align-items: baseline; gap: 10px;
+}
+
+.ed-year {
+  font-size: 18px; font-weight: 400; color: var(--muted);
+  letter-spacing: -.2px;
+}
+.ed-row.featured .ed-year { color: var(--gold); font-weight: 500; }
+
+.ed-num {
+  font-size: 11px; font-weight: 300; color: var(--dim);
+}
+
+.ed-sede {
+  font-size: 13px; font-weight: 400; color: var(--muted);
+}
+.ed-row.featured .ed-sede { color: var(--text); font-weight: 400; }
+
+.ed-dato {
+  font-size: 11px; font-weight: 300; color: var(--dim);
+  text-align: right;
+}
+.ed-row.featured .ed-dato { color: var(--gold); opacity: .8; }
+</style>
