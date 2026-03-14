@@ -384,6 +384,21 @@ async function main() {
     process.stdout.write(`  ✓ Edición ${ed.year} — ${refs.length} ganadores enlazados\n`);
   }
 
+  // PASO 4: Enlazar finalistas (nominados) a ediciones
+  process.stdout.write('\n── Paso 4: enlazando finalistas a ediciones...\n');
+  for (const ed of EDICIONES) {
+    const edId = `edicion-${ed.year}`;
+    const lista = FINALISTAS[ed.year] || [];
+    const catCount = {};
+    const refs = lista.map(([cat]) => {
+      catCount[cat] = (catCount[cat] || 0) + 1;
+      const nId = `finalista-${ed.year}-${slugify(cat)}-${catCount[cat]}`;
+      return { _type: 'reference', _ref: nId, _key: nId };
+    });
+    await client.patch(edId).set({ nominados: refs }).commit();
+    process.stdout.write(`  ✓ Edición ${ed.year} — ${refs.length} finalistas enlazados\n`);
+  }
+
   process.stdout.write(`\n🎉 Listo: ${total} documentos subidos a Sanity.\n`);
 }
 

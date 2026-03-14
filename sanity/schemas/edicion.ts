@@ -105,6 +105,13 @@ export default {
       to: [{ type: 'foro' }],
     },
     {
+      name: 'esActual',
+      title: '⭐ Edición actual',
+      type: 'boolean',
+      description: 'Solo UNA edición debe tener esto activo. Es la que aparece en el homepage.',
+      initialValue: false,
+    },
+    {
       name: 'publicada',
       title: 'Publicada',
       type: 'boolean',

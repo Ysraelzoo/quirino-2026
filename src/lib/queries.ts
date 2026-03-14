@@ -20,6 +20,16 @@ export function t(field: I18nField, lang: Lang): string {
 
 // ── Queries ────────────────────────────────────────
 
+// Edición actual (la marcada como esActual en Sanity)
+export async function getEdicionActual() {
+  return client.fetch(`
+    *[_type == "edicion" && esActual == true][0] {
+      _id, year, numero, titulo, slug, fechaInicio, fechaFin, sede,
+      heroImage, publicada
+    }
+  `);
+}
+
 // Todas las ediciones (para homepage y listado)
 export async function getEdiciones() {
   return client.fetch(`

@@ -10,26 +10,29 @@ import PhotoStrip from '../components/sections/PhotoStrip.astro';
 import Ediciones from '../components/sections/Ediciones.astro';
 import Noticias from '../components/sections/Noticias.astro';
 import Patrocinadores from '../components/sections/Patrocinadores.astro';
-import { getEdiciones, getNoticias, getPatrocinadores } from '../lib/queries';
+import { getEdicionActual, getEdiciones, getNoticias, getPatrocinadores } from '../lib/queries';
 
 const lang = 'es'; // TODO: detectar desde URL cuando se implemente i18n
 
 // Datos desde Sanity (con fallback si no hay datos aún)
+let edicionActual: any = null;
 let ediciones = [];
 let noticias  = [];
 let patrocinadores = [];
 
 try {
-  ediciones      = await getEdiciones();
-  noticias       = await getNoticias(3);
-  patrocinadores = await getPatrocinadores();
+  [edicionActual, ediciones, noticias, patrocinadores] = await Promise.all([
+    getEdicionActual(),
+    getEdiciones(),
+    getNoticias(3),
+    getPatrocinadores(),
+  ]);
 } catch (e) {
-  // Sanity no configurado todavía — usar datos de placeholder
   console.warn('[Quirino] Sanity no configurado — usando datos placeholder');
 }
 
-// Edición más reciente
-const edicionActual = ediciones[0] || {
+// Fallback si ninguna edición tiene esActual == true
+edicionActual ??= ediciones[0] ?? {
   year: 2026, numero: 9, sede: 'Auditorio Adán Martín, Santa Cruz de Tenerife'
 };
 
