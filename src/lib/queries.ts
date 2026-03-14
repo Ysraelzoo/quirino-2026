@@ -121,12 +121,15 @@ export async function getQuirinoLab(edicionYear?: number) {
   `, edicionYear ? { edicionYear } : {});
 }
 
-// Palmarés histórico: todas las ediciones con sus ganadores
+// Palmarés histórico: todas las ediciones con ganadores y finalistas
 export async function getPalmares() {
   return client.fetch(`
     *[_type == "edicion" && publicada == true] | order(year desc) {
       _id, year, numero, sede,
       "ganadores": ganadores[]-> | order(categoria asc) {
+        _id, categoria, tituloObra, pais, productora, director
+      },
+      "finalistas": *[_type == "nominado" && edicion._ref == ^._id && esGanador == false] | order(categoria asc) {
         _id, categoria, tituloObra, pais, productora, director
       }
     }

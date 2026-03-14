@@ -6,7 +6,8 @@
       "Bash(pandoc --track-changes=all \"C:\\\\Users\\\\Usuario\\\\Downloads\\\\quirino-claudecode-briefing.docx\" -t markdown)",
       "Bash(where pandoc:*)",
       "mcp__Claude_Preview__preview_start",
-      "Bash(New-Item -ItemType Directory -Force -Path \"C:\\\\Users\\\\Usuario\\\\iCloudDrive\\\\WORK\\\\3DWIRE\\\\PREMIOS QUIRINO\\\\WEBSITE QUIRINO 2026\\\\quirino\\\\src\\\\pages\\\\palmares\")"
+      "Bash(New-Item -ItemType Directory -Force -Path \"C:\\\\Users\\\\Usuario\\\\iCloudDrive\\\\WORK\\\\3DWIRE\\\\PREMIOS QUIRINO\\\\WEBSITE QUIRINO 2026\\\\quirino\\\\src\\\\pages\\\\palmares\")",
+      "WebFetch(domain:premiosquirino.org)"
     ]
   }
 }

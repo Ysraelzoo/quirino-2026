@@ -27,14 +27,39 @@ const t = useTranslations(lang);
       <a class="nav-lang" href="/en" class:list={[{ on: lang === 'en' }]}>EN</a>
     </div>
     <a class="nav-cta" href="#inscripcion">{t('nav.cta')}</a>
+    <!-- Hamburger — solo visible en móvil -->
+    <button class="nav-burger" id="navBurger" aria-label="Menú" aria-expanded="false">
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </nav>
+
+<!-- Panel menú móvil -->
+<div class="nav-panel" id="navPanel" aria-hidden="true">
+  <div class="np-inner">
+    <nav class="np-links">
+      <a class="np-link" href="/">{t('nav.premios')}</a>
+      <a class="np-link" href="/industria">{t('nav.industria')}</a>
+      <a class="np-link" href="/palmares">{t('nav.palmares')}</a>
+      <a class="np-link" href="/prensa">{t('nav.prensa')}</a>
+    </nav>
+    <div class="np-bottom">
+      <a class="np-cta" href="#inscripcion">{t('nav.cta')}</a>
+      <div class="np-langs">
+        <a class="np-lang" href="/es" class:list={[{ on: lang === 'es' }]}>ES</a>
+        <a class="np-lang" href="/pt" class:list={[{ on: lang === 'pt' }]}>PT</a>
+        <a class="np-lang" href="/en" class:list={[{ on: lang === 'en' }]}>EN</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <style>
 nav {
   position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 100;
+  z-index: 200;
   padding: 20px var(--gutter);
   display: flex;
   align-items: center;
@@ -54,8 +79,7 @@ nav.over-light {
 
 .nav-logo {
   font-size: 12px; font-weight: 400; letter-spacing: .4px;
-  color: rgba(250,249,247,.7);
-  transition: color .2s;
+  color: rgba(250,249,247,.7); transition: color .2s;
 }
 nav.over-light .nav-logo { color: var(--text); }
 .nav-logo .mark { color: var(--gold); }
@@ -63,8 +87,7 @@ nav.over-light .nav-logo { color: var(--text); }
 .nav-links { display: flex; gap: 24px; }
 .nav-link {
   font-size: 11px; font-weight: 400; letter-spacing: .3px;
-  color: rgba(250,249,247,.35);
-  transition: color .2s;
+  color: rgba(250,249,247,.35); transition: color .2s;
 }
 .nav-link:hover, .nav-link.on { color: rgba(250,249,247,.85); }
 nav.over-light .nav-link       { color: var(--muted); }
@@ -78,34 +101,159 @@ nav.over-light .nav-link:hover { color: var(--text); }
   transition: color .2s, border-color .2s;
 }
 .nav-lang:hover, .nav-lang.on { color: var(--gold); border-color: var(--gold); }
-nav.over-light .nav-lang       { color: var(--muted); }
+nav.over-light .nav-lang { color: var(--muted); }
 
 .nav-cta {
-  font-size: 11px; font-weight: 500; letter-spacing: .3px;
-  color: rgba(250,249,247,.7);
-  border-bottom: 1px solid rgba(250,249,247,.3);
-  padding-bottom: 1px;
-  transition: color .2s, border-color .2s;
+  font-size: 11px; font-weight: 500; letter-spacing: .5px;
+  text-transform: uppercase; color: var(--gold);
+  border: 1px solid rgba(184,134,42,.5);
+  padding: 7px 16px; border-radius: 2px;
+  transition: background .2s, border-color .2s, color .2s;
 }
-.nav-cta:hover { color: var(--gold); border-color: var(--gold); }
-nav.over-light .nav-cta { color: var(--text); border-color: var(--text); }
+.nav-cta:hover { background: var(--gold); border-color: var(--gold); color: #fff; }
+nav.over-light .nav-cta { color: var(--gold); border-color: rgba(184,134,42,.5); background: transparent; }
+nav.over-light .nav-cta:hover { background: var(--gold); border-color: var(--gold); color: #fff; }
+
+/* ── Hamburger ── */
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px; height: 32px;
+  padding: 4px;
+  cursor: pointer;
+}
+.nav-burger span {
+  display: block;
+  height: 1.5px;
+  background: rgba(250,249,247,.7);
+  border-radius: 1px;
+  transition: transform .3s ease, opacity .3s ease, width .3s ease;
+  transform-origin: center;
+}
+nav.over-light .nav-burger span { background: var(--text); }
+
+/* Estado abierto */
+.nav-burger.open span:first-child  { transform: translateY(3.25px) rotate(45deg); }
+.nav-burger.open span:last-child   { transform: translateY(-3.25px) rotate(-45deg); }
+
+/* ── Panel móvil ── */
+.nav-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  padding: 80px var(--gutter) 48px;
+  transform: translateX(100%);
+  transition: transform .4s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+  overflow-y: auto;
+}
+.nav-panel.open {
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.np-inner {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.np-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.np-link {
+  font-size: clamp(36px, 9vw, 56px);
+  font-weight: 700;
+  color: rgba(250,249,247,.15);
+  letter-spacing: -1.5px;
+  text-transform: uppercase;
+  line-height: 1.1;
+  transition: color .2s;
+}
+.np-link:hover { color: rgba(250,249,247,.9); }
+
+.np-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+
+.np-cta {
+  font-size: 11px; font-weight: 500; letter-spacing: .5px;
+  text-transform: uppercase; color: var(--gold);
+  border: 1px solid rgba(184,134,42,.5);
+  padding: 9px 20px; border-radius: 2px;
+  transition: background .2s, color .2s;
+}
+.np-cta:hover { background: var(--gold); color: #fff; }
+
+.np-langs { display: flex; gap: 16px; }
+.np-lang {
+  font-size: 12px; font-weight: 400; color: rgba(250,249,247,.2);
+  transition: color .2s;
+}
+.np-lang:hover, .np-lang.on { color: var(--gold); }
+
+/* ── Media queries ── */
+@media (max-width: 768px) {
+  nav { padding: 16px var(--gutter); }
+  .nav-links { display: none; }
+  .nav-langs { display: none; }
+  .nav-cta   { display: none; }
+  .nav-right { gap: 0; }
+  .nav-burger { display: flex; }
+}
 </style>
 
 <script>
-const nav  = document.getElementById('nav');
-const hero = document.getElementById('hero');
+const nav    = document.getElementById('nav');
+const hero   = document.getElementById('hero');
+const burger = document.getElementById('navBurger');
+const panel  = document.getElementById('navPanel');
 
+// ── Scroll nav ──
 function updateNav() {
   if (!nav || !hero) return;
   const below = hero.getBoundingClientRect().bottom <= 0;
   nav.classList.toggle('over-light', below);
   nav.classList.toggle('over-dark',  !below);
 }
-
 updateNav();
 window.addEventListener('scroll', updateNav, { passive: true });
 
-// Smooth scroll para links internos
+// ── Hamburger toggle ──
+burger?.addEventListener('click', () => {
+  const isOpen = panel?.classList.toggle('open');
+  burger.classList.toggle('open', isOpen);
+  burger.setAttribute('aria-expanded', String(isOpen));
+  panel?.setAttribute('aria-hidden', String(!isOpen));
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+});
+
+// Cerrar al hacer click en un enlace del panel
+panel?.querySelectorAll('.np-link, .np-cta').forEach(link => {
+  link.addEventListener('click', () => {
+    panel.classList.remove('open');
+    burger?.classList.remove('open');
+    burger?.setAttribute('aria-expanded', 'false');
+    panel.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  });
+});
+
+// ── Smooth scroll ──
 document.querySelectorAll('.nav-link[href^="#"]').forEach(link => {
   link.addEventListener('click', (e) => {
     e.preventDefault();

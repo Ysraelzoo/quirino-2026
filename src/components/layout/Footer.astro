@@ -133,4 +133,28 @@ footer {
   transition: color .15s;
 }
 .fb-lang:hover, .fb-lang.on { color: var(--gold); }
+
+@media (max-width: 768px) {
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px 24px;
+    padding: 40px 0;
+  }
+  .ft-col:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .ft-col:first-child { grid-column: auto; }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
 </style>

@@ -31,3 +31,10 @@
   --gutter:      28px;
   --section-v:   120px;
 }
+
+@media (max-width: 768px) {
+  :root {
+    --gutter:    20px;
+    --section-v: 72px;
+  }
+}

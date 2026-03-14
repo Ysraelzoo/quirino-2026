@@ -137,4 +137,18 @@ const edicionesFallback: Edicion[] = ediciones?.length ? ediciones : [
   text-align: right;
 }
 .ed-row.featured .ed-dato { color: var(--gold); opacity: .8; }
+
+@media (max-width: 768px) {
+  .ed-header {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+  .ed-head-row { display: none; }
+  .ed-row {
+    grid-template-columns: 80px 1fr;
+    gap: 16px;
+  }
+  .ed-dato { display: none; }
+}
 </style>

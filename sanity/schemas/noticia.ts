@@ -74,11 +74,12 @@ export default {
       type: 'string',
       options: {
         list: [
-          { title: 'Convocatoria', value: 'convocatoria' },
-          { title: 'Foro', value: 'foro' },
-          { title: 'Quirino Lab', value: 'lab' },
-          { title: 'Ganadores', value: 'ganadores' },
-          { title: 'General', value: 'general' },
+          { title: 'Convocatoria', value: 'Convocatoria' },
+          { title: 'Foro',         value: 'Foro' },
+          { title: 'Quirino Lab',  value: 'Quirino Lab' },
+          { title: 'Premios',      value: 'Premios' },
+          { title: 'Internacional',value: 'Internacional' },
+          { title: 'General',      value: 'General' },
         ],
       },
     },

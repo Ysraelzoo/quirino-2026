@@ -110,4 +110,22 @@ function formatFecha(fecha: string, lang: Lang) {
   font-size: 12px; font-weight: 300; color: var(--muted);
   line-height: 1.75; max-width: 520px;
 }
+
+@media (max-width: 768px) {
+  .news-header {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding-top: 56px;
+    margin-bottom: 36px;
+  }
+  .news-h-right { justify-content: flex-start; }
+  .news-table-head { display: none; }
+  .news-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 20px 0;
+  }
+  .news-date { font-size: 11px; }
+  .news-body { display: none; }
+}
 </style>

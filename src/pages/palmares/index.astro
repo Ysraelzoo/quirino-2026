@@ -195,20 +195,37 @@ const years = historialFallback.map(e => e.year);
           </div>
 
           {ed.ganadores.map((g: any) => {
-            // Soporta datos Sanity (tituloObra i18n + productora)
-            // y placeholders legacy (obra + estudio)
             const titulo = g.tituloObra?.[lang] || g.tituloObra?.es || g.obra || '';
             const credito = g.productora || (g.estudio !== '—' && g.estudio !== '---' ? g.estudio : '');
+            // Finalistas de esta misma categoría
+            const fins = (ed.finalistas || []).filter((f: any) => f.categoria === g.categoria);
             return (
-              <div class="winner-row" role="row">
-                <span class="w-cat">{g.categoria}</span>
-                <div class="w-obra-wrap">
-                  <span class="w-obra">{titulo}</span>
-                  {credito && <span class="w-prod">{credito}</span>}
+              <div class="cat-block">
+                <div class="winner-row" role="row">
+                  <span class="w-cat">{g.categoria}</span>
+                  <div class="w-obra-wrap">
+                    <span class="w-obra">{titulo}</span>
+                    {credito && <span class="w-prod">{credito}</span>}
+                  </div>
+                  <span class="w-meta">
+                    {g.pais}{g.director ? ` · ${g.director}` : ''}
+                  </span>
                 </div>
-                <span class="w-meta">
-                  {g.pais}{g.director ? ` · ${g.director}` : ''}
-                </span>
+                {fins.map((f: any) => {
+                  const ft = f.tituloObra?.[lang] || f.tituloObra?.es || '';
+                  return (
+                    <div class="finalist-row" role="row">
+                      <span class="f-spacer" />
+                      <div class="w-obra-wrap">
+                        <span class="f-obra">{ft}</span>
+                        {f.productora && <span class="w-prod">{f.productora}</span>}
+                      </div>
+                      <span class="w-meta f-meta">
+                        {f.pais}{f.director ? ` · ${f.director}` : ''}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             );
           })}
@@ -334,6 +351,8 @@ const years = historialFallback.map(e => e.year);
   border-top: 1px solid var(--line);
 }
 
+.cat-block { border-bottom: 1px solid var(--line); }
+
 .winners-head {
   display: grid;
   grid-template-columns: 300px 1fr 260px;
@@ -352,12 +371,33 @@ const years = historialFallback.map(e => e.year);
   display: grid;
   grid-template-columns: 300px 1fr 260px;
   gap: 40px;
-  padding: 22px 0;
-  border-bottom: 1px solid var(--line);
+  padding: 22px 0 12px;
   align-items: start;
   transition: opacity .15s;
 }
-.winner-row:hover { opacity: .5; }
+.winner-row:hover { opacity: .7; }
+
+.finalist-row {
+  display: grid;
+  grid-template-columns: 300px 1fr 260px;
+  gap: 40px;
+  padding: 6px 0;
+  align-items: start;
+}
+.finalist-row:last-child { padding-bottom: 20px; }
+
+.f-spacer { display: block; }
+
+.f-obra {
+  font-size: 14px; font-weight: 300;
+  color: var(--muted);
+  letter-spacing: -.1px;
+}
+
+.f-meta {
+  font-size: 11px;
+  opacity: .6;
+}
 
 .w-cat {
   font-size: 11px; font-weight: 400;
@@ -423,8 +463,17 @@ const years = historialFallback.map(e => e.year);
   .winner-row {
     grid-template-columns: 1fr;
     gap: 6px;
-    padding: 16px 0;
+    padding: 16px 0 8px;
   }
+
+  .finalist-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 4px 0;
+    padding-left: 12px;
+  }
+  .finalist-row:last-child { padding-bottom: 14px; }
+  .f-spacer { display: none; }
 
   .w-meta {
     text-align: left;
