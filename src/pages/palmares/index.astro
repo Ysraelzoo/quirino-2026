@@ -383,6 +383,55 @@ const years = historialFallback.map(e => e.year);
   color: var(--muted);
   text-align: right; padding-top: 3px;
 }
+
+@media (max-width: 768px) {
+  .palm-hero {
+    padding: 120px var(--gutter) 0;
+    gap: 40px;
+  }
+
+  .ph-inner {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .year-nav {
+    gap: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .year-btn {
+    font-size: 12px;
+    padding: 16px 18px;
+  }
+
+  .palm-panel {
+    padding-top: 40px;
+  }
+
+  .ed-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 32px;
+  }
+
+  .ed-num { font-size: 22px; }
+
+  .winners-head { display: none; }
+
+  .winner-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 16px 0;
+  }
+
+  .w-meta {
+    text-align: left;
+  }
+
+  .w-obra { font-size: 16px; }
+}
 </style>
 
 <script>
