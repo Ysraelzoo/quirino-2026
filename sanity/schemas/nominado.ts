@@ -1,16 +1,17 @@
 // sanity/schemas/nominado.ts
 
 const CATEGORIAS = [
-  'Mejor Largometraje Iberoamericano',
-  'Mejor Largometraje Europeo-Iberoamericano',
-  'Mejor Serie de Animación',
+  'Mejor Largometraje',
+  'Mejor Serie',
   'Mejor Cortometraje',
-  'Mejor Videojuego',
-  'Mejor Producción de Encargo',
-  'Mejor Producción de Escuela',
-  'Premio del Público',
-  'Premio Especial del Jurado',
-  'Premio Trayectoria Iberoamericana',
+  'Mejor Cortometraje de escuela',
+  'Mejor Animación de Encargo',
+  'Mejor Animación de Videojuego',
+  'Mejor Videoclip',
+  'Mejor Desarrollo Visual',
+  'Mejor Diseño de Animación',
+  'Mejor Diseño de Sonido y Música',
+  'Mejor Obra Innovadora',
 ];
 
 export default {
