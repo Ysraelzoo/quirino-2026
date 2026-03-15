@@ -10,6 +10,7 @@ export const client = createClient({
   apiVersion: '2024-01-01',
   useCdn:    false,               // false en SSG: siempre datos frescos en build
   token:     import.meta.env.SANITY_API_TOKEN,
+  perspective: 'published',       // excluir drafts (docs con prefijo drafts.*)
 });
 
 // Helper para construir URLs de imágenes de Sanity
