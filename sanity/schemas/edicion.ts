@@ -105,6 +105,23 @@ export default {
       to: [{ type: 'foro' }],
     },
     {
+      name: 'estado',
+      title: 'Estado de la edición',
+      type: 'string',
+      options: {
+        list: [
+          { title: '📣 Convocatoria abierta',  value: 'convocatoria' },
+          { title: '🎬 Nominados publicados',  value: 'nominados'    },
+          { title: '🏁 Finalistas publicados', value: 'finalistas'   },
+          { title: '🏆 Ganadores revelados',   value: 'ganadores'    },
+          { title: '📦 Archivada',             value: 'archivada'    },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'convocatoria',
+      validation: (Rule: any) => Rule.required(),
+    },
+    {
       name: 'esActual',
       title: '⭐ Edición actual',
       type: 'boolean',
@@ -121,11 +138,15 @@ export default {
   ],
   orderings: [{ title: 'Año (desc)', name: 'yearDesc', by: [{ field: 'year', direction: 'desc' }] }],
   preview: {
-    select: { title: 'year', subtitle: 'sede', published: 'publicada' },
-    prepare({ title, subtitle, published }: any) {
+    select: { title: 'year', subtitle: 'sede', estado: 'estado', actual: 'esActual' },
+    prepare({ title, subtitle, estado, actual }: any) {
+      const badges: Record<string, string> = {
+        convocatoria: '📣', nominados: '🎬', finalistas: '🏁', ganadores: '🏆', archivada: '📦',
+      };
+      const badge = badges[estado] || '';
       return {
-        title: `${title} — ${published ? '✓ Publicada' : 'Borrador'}`,
-        subtitle,
+        title: `${actual ? '⭐ ' : ''}${title} ${badge}`,
+        subtitle: subtitle || '',
       };
     },
   },

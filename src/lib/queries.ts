@@ -25,7 +25,7 @@ export async function getEdicionActual() {
   return client.fetch(`
     *[_type == "edicion" && esActual == true][0] {
       _id, year, numero, titulo, slug, fechaInicio, fechaFin, sede,
-      heroImage, publicada
+      heroImage, publicada, estado
     }
   `);
 }
