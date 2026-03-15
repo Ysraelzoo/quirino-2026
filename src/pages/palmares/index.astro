@@ -194,7 +194,7 @@ const years = historialFallback.map(e => e.year);
             <span class="w-th w-th-r" role="columnheader">País · Estudio</span>
           </div>
 
-          {ed.ganadores.map((g: any) => {
+          {(ed.ganadores || []).map((g: any) => {
             const titulo = g.tituloObra?.[lang] || g.tituloObra?.es || g.obra || '';
             const credito = g.productora || (g.estudio !== '—' && g.estudio !== '---' ? g.estudio : '');
             // Finalistas de esta misma categoría
